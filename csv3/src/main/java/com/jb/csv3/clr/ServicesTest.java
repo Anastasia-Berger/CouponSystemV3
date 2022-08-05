@@ -2,6 +2,7 @@ package com.jb.csv3.clr;
 
 import com.jb.csv3.entity.Company;
 import com.jb.csv3.entity.Customer;
+import com.jb.csv3.exeptions.CouponSystemException;
 import com.jb.csv3.login.ClientService;
 import com.jb.csv3.login.LoginManager;
 import com.jb.csv3.entity.Coupon;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 
 @Component
 @Order(2)
@@ -189,6 +191,37 @@ public class ServicesTest implements CommandLineRunner {
         System.out.println("GET CMPN DETAILS");
         TablePrinter.print(companyLogin.getCompanyDetails());
 
+        System.out.println("///////////////////////////////////////////////////////////////////////////////////////////////////");
+        System.out.println("CUSTOMER SERVICE TEST");
+        System.out.println(" ");
+        System.out.println("Customer Login with correct details:");
+
+        ClientService cstmrGoodLogin = null;
+        try {
+            cstmrGoodLogin = loginManager.login(ClientType.CUSTOMER, "alex@mail.com", "abc123");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        CustomerServiceImpl cstmrLogin = (CustomerServiceImpl) cstmrGoodLogin;
+
+        System.out.println("purchaseCoupon");
+        cstmrLogin.purchaseCoupon(cpntu);
+        TablePrinter.print(customerRepository.findByEmail(cstmrLogin.getCustomerDetails().getEmail()));
+
+        System.out.println("getCustomerCoupons");
+        TablePrinter.print(cstmrLogin.getCustomerCoupons());
+
+        System.out.println("getCustomerCoupons by category ELECTRONICS");
+        TablePrinter.print(cstmrLogin.getCustomerCoupons(Category.ELECTRONICS));
+        System.out.println("getCustomerCoupons by category CLOTHING");
+        TablePrinter.print(cstmrLogin.getCustomerCoupons(Category.CLOTHING));
+
+        System.out.println("getCustomerCoupons by maxPrice");
+        TablePrinter.print(cstmrLogin.getCustomerCoupons(11));
+
+        System.out.println("getCustomerDetails");
+        TablePrinter.print(cstmrLogin.getCustomerDetails());
 
     }
 }
