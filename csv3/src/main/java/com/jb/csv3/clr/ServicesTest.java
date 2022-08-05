@@ -138,18 +138,57 @@ public class ServicesTest implements CommandLineRunner {
                         .companyId(companyLogin.getCompanyDetails().getId())
                         .title("Coupon V")
                         .description("coupon 5 description")
-                        .category(Category.ELECTRONICS)
+                        .category(Category.CLOTHING)
                         .amount(100)
-                        .price(10.50)
+                        .price(41.50)
                         .startDate(Date.valueOf(LocalDate.of(2022, 9, 1)))
                         .endDate(Date.valueOf(LocalDate.of(2022, 9, 30)))
                         .build()
         );
+
+        companyLogin.addCoupon(
+                Coupon.builder()
+                        .companyId(companyLogin.getCompanyDetails().getId())
+                        .title("Coupon 45")
+                        .description("coupon description")
+                        .category(Category.CLOTHING)
+                        .amount(100)
+                        .price(50)
+                        .startDate(Date.valueOf(LocalDate.of(2022, 9, 1)))
+                        .endDate(Date.valueOf(LocalDate.of(2022, 9, 30)))
+                        .build()
+        );
+
 
         System.out.println("CHECK FOR COUPN REPO UPDATE");
         TablePrinter.print(couponRepository.findAll());
 
         System.out.println("COMPANY ADD COUPON");
         TablePrinter.print(companyLogin.getCompanyCoupons());
+
+        System.out.println("CMPN UPDT CPN");
+
+        Coupon cpntu = couponRepository.findById(1).get();
+        cpntu.setTitle("UPDATED TITLE");
+        cpntu.setAmount(25);
+
+        System.out.println(cpntu);
+
+        companyLogin.updateCoupon(cpntu);
+        TablePrinter.print(companyLogin.getCompanyCoupons());
+
+        System.out.println("GET CMPN CPNS");
+        TablePrinter.print(companyLogin.getCompanyCoupons());
+
+        System.out.println("GET CMPN CPNS BY CTGR");
+        TablePrinter.print(companyLogin.getCompanyCoupons(Category.CLOTHING));
+
+        System.out.println("GET CMPN CPNS BY MXPRC");
+        TablePrinter.print(companyLogin.getCompanyCoupons(42));
+
+        System.out.println("GET CMPN DETAILS");
+        TablePrinter.print(companyLogin.getCompanyDetails());
+
+
     }
 }

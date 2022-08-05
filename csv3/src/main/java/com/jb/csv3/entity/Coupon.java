@@ -3,6 +3,8 @@ package com.jb.csv3.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jb.csv3.enums.Category;
+import com.jb.csv3.exeptions.CouponSystemException;
+import com.jb.csv3.exeptions.ErrMsg;
 import lombok.*;
 
 import javax.persistence.*;
@@ -45,5 +47,12 @@ public class Coupon {
     @Column(nullable = false)
     private double price;
     private String image;
+
+    public void setId(int id) throws CouponSystemException {
+        if (this.id == 0) {
+            this.id = id;
+        }
+        throw new CouponSystemException(ErrMsg.ILLEGAL_ACTION_EXCEPTION);
+    }
 
 }

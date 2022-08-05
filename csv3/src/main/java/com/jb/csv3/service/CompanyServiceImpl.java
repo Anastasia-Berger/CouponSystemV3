@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 @Scope("prototype")
 public class CompanyServiceImpl extends ClientService implements CompanyService {
 
-    // This variable stores the company that loged in
+    // This variable stores the company that logged in
     private Company currentCompany;
-    // This variable stores the id of loged company
+    // This variable stores the id of logged company
     private int companyID;
 
 
@@ -29,7 +29,7 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
             throw new CouponSystemException(ErrMsg.INCORRECT_LOGIN);
         }
 
-        // Create company that loged
+        // Creating copy of company that logged
         Company company = companyRepository.findByEmail(email);
 
         if (!company.getPassword().equals(password))
@@ -38,20 +38,22 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
 
         this.currentCompany = company;
         this.companyID = currentCompany.getId();
+
         return true;
     }
 
     @Override
     public void addCoupon(Coupon coupon) throws CouponSystemException {
+
         for (Coupon companyCoupon : currentCompany.getCoupons()) {
-            // Coupon title can't be the same as already existing in company repository
             if (companyCoupon.getTitle().equals(coupon.getTitle()))
+                // Coupon title can't be the same as already existing in company repository
                 throw new CouponSystemException(ErrMsg.DUPLICATE_COUPON_TITLE);
         }
 
-        // Saving coupon as ManyToOne bidirectional will automatically update the company coupon list
+        // Associates coupon with the owner company
         coupon.setCompanyId(currentCompany.getId());
-
+        // Adding the new coupon to repository
         couponRepository.save(coupon);
 
         // Updating the plain object to include all new coupons.
@@ -61,20 +63,38 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
 
     @Override
     public void updateCoupon(Coupon coupon) throws CouponSystemException {
+        // Checks if the coupon is in the repo
         if (!couponRepository.existsById(coupon.getId())) {
             throw new CouponSystemException(ErrMsg.ID_NOT_EXIST);
         }
-        if (couponRepository.existsByTitle(coupon.getTitle())) {
-            throw new CouponSystemException(ErrMsg.DUPLICATE_COUPON_TITLE);
+
+        // Checks if company is the owner of the coupon
+        if (coupon.getCompanyId() != companyID) {
+            throw new CouponSystemException(ErrMsg.UNAUTHORIZED_EVENT);
         }
+
+        // Checks the unique title of the coupon
+        for (Coupon companyCoupon : currentCompany.getCoupons()) {
+            if (companyCoupon.getTitle().equals(coupon.getTitle()))
+                // Coupon title can't be the same as already existing in company repository
+                throw new CouponSystemException(ErrMsg.DUPLICATE_COUPON_TITLE);
+        }
+
+        // Updating the coupon
         couponRepository.saveAndFlush(coupon);
+
+        List<Coupon> updatedCouponList = companyRepository.findById(currentCompany.getId()).get().getCoupons();
+        currentCompany.setCoupons(updatedCouponList);
     }
 
     @Override
     public void deleteCoupon(int couponID) throws CouponSystemException {
+        // Checks if the coupon is in the repo
         if (!couponRepository.existsById(couponID)) {
             throw new CouponSystemException(ErrMsg.ID_NOT_EXIST);
         }
+
+        couponRepository.deleteCouponPurchaseHistory(couponID);
         couponRepository.deleteById(couponID);
     }
 
@@ -88,7 +108,6 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
         List<Coupon> couponListSortedByCategory = currentCompany.getCoupons().stream()
                 .filter(coupon -> category.ordinal() == coupon.getCategory().ordinal())
                 .collect(Collectors.toList());
-        ;
 
         return couponListSortedByCategory;
     }
