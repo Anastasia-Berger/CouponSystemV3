@@ -6,45 +6,28 @@ import com.jb.csv3.enums.Category;
 import com.jb.csv3.exeptions.CouponSystemException;
 import com.jb.csv3.exeptions.ErrMsg;
 import com.jb.csv3.login.ClientService;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Scope("prototype")
 public class CustomerServiceImpl extends ClientService implements CustomerService {
-
-    private Customer currentCustomer;
-    private int customerID;
 
     @Override
     public boolean login(String email, String password) throws CouponSystemException {
-        if (!customerRepository.existsByEmail(email)) {
-            throw new CouponSystemException(ErrMsg.INCORRECT_LOGIN);
-        }
-
-        Customer customer = customerRepository.findByEmail(email);
-
-        if (!customer.getPassword().equals(password))
-            throw new CouponSystemException(ErrMsg.INCORRECT_PASSWORD);
-
-
-        this.currentCustomer = customer;
-        this.customerID = currentCustomer.getId();
-        return true;
+        return customerRepository.findByEmailAndPassword(email, password);
     }
 
     @Override
-    public void purchaseCoupon(Coupon coupon) throws CouponSystemException {
+    public void purchaseCoupon(int customerID, Coupon coupon) throws CouponSystemException {
         // Check if coupon is stock
         if (coupon.getAmount() == 0) {
             throw new CouponSystemException(ErrMsg.COUPON_IS_OUT_OF_STOCK);
         }
 
         // Check customer's stock of coupons
-        for (Coupon customerCoupon : currentCustomer.getCoupons()) {
+        for (Coupon customerCoupon : customerRepository.findById(customerID).get().getCoupons()) {
             if (customerCoupon.getId() == coupon.getId())
                 throw new CouponSystemException(ErrMsg.ALREADY_PURCHASED);
         }
@@ -53,24 +36,24 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
         // Updating coupon amount in repository
         couponRepository.saveAndFlush(coupon);
 
-        Customer customerFromDB = customerRepository.findById(currentCustomer.getId()).get();
+        Customer customerFromDB = customerRepository.findById(customerID).get();
         customerFromDB.getCoupons().add(coupon);
 
         // Updating customer coupon list in repository
         customerRepository.saveAndFlush(customerFromDB);
 
         // Updating current logged user by data from updated repository
-        currentCustomer.setCoupons(customerFromDB.getCoupons());
+        customerRepository.findById(customerID).get().setCoupons(customerFromDB.getCoupons());
     }
 
     @Override
-    public List<Coupon> getCustomerCoupons() {
-        return currentCustomer.getCoupons();
+    public List<Coupon> getCustomerCoupons(int customerID) {
+        return customerRepository.findById(customerID).get().getCoupons();
     }
 
     @Override
-    public List<Coupon> getCustomerCoupons(Category category) {
-        List<Coupon> couponListSortedByCategory = currentCustomer.getCoupons().stream()
+    public List<Coupon> getCustomerCoupons(int customerID, Category category) {
+        List<Coupon> couponListSortedByCategory = customerRepository.findById(customerID).get().getCoupons().stream()
                 .filter(coupon -> category.ordinal() == coupon.getCategory().ordinal())
                 .collect(Collectors.toList());
         ;
@@ -79,8 +62,8 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
     }
 
     @Override
-    public List<Coupon> getCustomerCoupons(double maxPrice) {
-        List<Coupon> couponListSortedByMaxPrice = currentCustomer.getCoupons().stream()
+    public List<Coupon> getCustomerCoupons(int customerID, double maxPrice) {
+        List<Coupon> couponListSortedByMaxPrice = customerRepository.findById(customerID).get().getCoupons().stream()
                 .filter(coupon -> maxPrice >= coupon.getPrice())
                 .collect(Collectors.toList());
 
@@ -88,7 +71,7 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
     }
 
     @Override
-    public Customer getCustomerDetails() {
-        return currentCustomer;
+    public Customer getCustomerDetails(int customerID) {
+        return customerRepository.findById(customerID).get();
     }
 }

@@ -4,40 +4,40 @@ import com.jb.csv3.enums.ClientType;
 import com.jb.csv3.exeptions.CouponSystemException;
 import com.jb.csv3.exeptions.ErrMsg;
 import com.jb.csv3.service.*;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-@Lazy
+@Service
+@NoArgsConstructor
 public class LoginManager {
 
     @Autowired
-    private AdminServiceImpl adminServiceImpl;
+    private AdminService adminService;
     @Autowired
-    private CompanyServiceImpl companyServiceImpl;
+    private CompanyService companyService;
     @Autowired
-    private CustomerServiceImpl customerServiceImpl;
+    private CustomerService customerService;
 
     public ClientService login(ClientType clientType, String email, String password) throws CouponSystemException {
         switch (clientType) {
 
             case ADMINISTRATOR:
 
-                if (adminServiceImpl.login(email, password)) {
-                    return adminServiceImpl;
+                if (adminService.login(email, password)) {
+                    return (ClientService) adminService;
                 }
                 break;
 
             case COMPANY:
-                if (companyServiceImpl.login(email, password)) {
-                    return companyServiceImpl;
+                if (companyService.login(email, password)) {
+                    return (ClientService) companyService;
                 }
                 break;
 
             case CUSTOMER:
-                if (customerServiceImpl.login(email, password)) {
-                    return customerServiceImpl;
+                if (customerService.login(email, password)) {
+                    return (ClientService) customerService;
                 }
                 break;
 

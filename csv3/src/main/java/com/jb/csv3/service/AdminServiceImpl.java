@@ -7,22 +7,18 @@ import com.jb.csv3.exeptions.ErrMsg;
 import com.jb.csv3.login.ClientService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@Lazy
-@Primary
 public class AdminServiceImpl extends ClientService implements AdminService {
-
-    private final String ADMIN_EMAIL = "admin@admin.com";
-    private final String ADMIN_PASSWORD = "admin";
 
     @Override
     public boolean login(String email, String password) throws CouponSystemException {
-        if (!email.equals(ADMIN_EMAIL)) throw new CouponSystemException(ErrMsg.INCORRECT_LOGIN);
-        if (!password.equals(ADMIN_PASSWORD)) throw new CouponSystemException(ErrMsg.INCORRECT_PASSWORD);
+        if (!email.equals("admin@admin.com") || !password.equals("admin"))
+            throw new CouponSystemException(ErrMsg.INCORRECT_LOGIN);
 
         return true;
     }

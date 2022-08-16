@@ -6,21 +6,13 @@ import com.jb.csv3.enums.Category;
 import com.jb.csv3.exeptions.CouponSystemException;
 import com.jb.csv3.exeptions.ErrMsg;
 import com.jb.csv3.login.ClientService;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Scope("prototype")
 public class CompanyServiceImpl extends ClientService implements CompanyService {
-
-    // This variable stores the company that logged in
-    private Company currentCompany;
-    // This variable stores the id of logged company
-    private int companyID;
-
 
     @Override
     public boolean login(String email, String password) throws CouponSystemException {
@@ -36,33 +28,30 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
             // Incorrect password exception
             throw new CouponSystemException(ErrMsg.INCORRECT_PASSWORD);
 
-        this.currentCompany = company;
-        this.companyID = currentCompany.getId();
-
         return true;
     }
 
     @Override
-    public void addCoupon(Coupon coupon) throws CouponSystemException {
+    public void addCoupon(int companyID, Coupon coupon) throws CouponSystemException {
 
-        for (Coupon companyCoupon : currentCompany.getCoupons()) {
+        for (Coupon companyCoupon : companyRepository.findById(companyID).get().getCoupons()) {
             if (companyCoupon.getTitle().equals(coupon.getTitle()))
                 // Coupon title can't be the same as already existing in company repository
                 throw new CouponSystemException(ErrMsg.DUPLICATE_COUPON_TITLE);
         }
 
         // Associates coupon with the owner company
-        coupon.setCompanyId(currentCompany.getId());
+        coupon.setCompanyId(companyID);
         // Adding the new coupon to repository
         couponRepository.save(coupon);
 
         // Updating the plain object to include all new coupons.
-        List<Coupon> updatedCouponList = companyRepository.findById(currentCompany.getId()).get().getCoupons();
-        currentCompany.setCoupons(updatedCouponList);
+        List<Coupon> updatedCouponList = companyRepository.findById(companyID).get().getCoupons();
+        companyRepository.findById(companyID).get().setCoupons(updatedCouponList);
     }
 
     @Override
-    public void updateCoupon(Coupon coupon) throws CouponSystemException {
+    public void updateCoupon(int companyID, Coupon coupon) throws CouponSystemException {
         // Checks if the coupon is in the repo
         if (!couponRepository.existsById(coupon.getId())) {
             throw new CouponSystemException(ErrMsg.ID_NOT_EXIST);
@@ -74,7 +63,7 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
         }
 
         // Checks the unique title of the coupon
-        for (Coupon companyCoupon : currentCompany.getCoupons()) {
+        for (Coupon companyCoupon : companyRepository.findById(companyID).get().getCoupons()) {
             if (companyCoupon.getTitle().equals(coupon.getTitle()))
                 // Coupon title can't be the same as already existing in company repository
                 throw new CouponSystemException(ErrMsg.DUPLICATE_COUPON_TITLE);
@@ -83,12 +72,12 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
         // Updating the coupon
         couponRepository.saveAndFlush(coupon);
 
-        List<Coupon> updatedCouponList = companyRepository.findById(currentCompany.getId()).get().getCoupons();
-        currentCompany.setCoupons(updatedCouponList);
+        List<Coupon> updatedCouponList = companyRepository.findById(companyID).get().getCoupons();
+        companyRepository.findById(companyID).get().setCoupons(updatedCouponList);
     }
 
     @Override
-    public void deleteCoupon(int couponID) throws CouponSystemException {
+    public void deleteCoupon(int companyID, int couponID) throws CouponSystemException {
         // Checks if the coupon is in the repo
         if (!couponRepository.existsById(couponID)) {
             throw new CouponSystemException(ErrMsg.ID_NOT_EXIST);
@@ -96,16 +85,19 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
 
         couponRepository.deleteCouponPurchaseHistory(couponID);
         couponRepository.deleteById(couponID);
+
+        List<Coupon> updatedCouponList = companyRepository.findById(companyID).get().getCoupons();
+        companyRepository.findById(companyID).get().setCoupons(updatedCouponList);
     }
 
     @Override
-    public List<Coupon> getCompanyCoupons() {
-        return currentCompany.getCoupons();
+    public List<Coupon> getCompanyCoupons(int companyID) {
+        return companyRepository.findById(companyID).get().getCoupons();
     }
 
     @Override
-    public List<Coupon> getCompanyCoupons(Category category) {
-        List<Coupon> couponListSortedByCategory = currentCompany.getCoupons().stream()
+    public List<Coupon> getCompanyCoupons(int companyID, Category category) {
+        List<Coupon> couponListSortedByCategory = companyRepository.findById(companyID).get().getCoupons().stream()
                 .filter(coupon -> category.ordinal() == coupon.getCategory().ordinal())
                 .collect(Collectors.toList());
 
@@ -113,8 +105,8 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
     }
 
     @Override
-    public List<Coupon> getCompanyCoupons(double maxPrice) {
-        List<Coupon> couponListSortedByMaxPrice = currentCompany.getCoupons().stream()
+    public List<Coupon> getCompanyCoupons(int companyID, double maxPrice) {
+        List<Coupon> couponListSortedByMaxPrice = companyRepository.findById(companyID).get().getCoupons().stream()
                 .filter(coupon -> maxPrice >= coupon.getPrice())
                 .collect(Collectors.toList());
 
@@ -122,7 +114,7 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
     }
 
     @Override
-    public Company getCompanyDetails() {
-        return currentCompany;
+    public Company getCompanyDetails(int companyID) {
+        return companyRepository.findById(companyID).get();
     }
 }
