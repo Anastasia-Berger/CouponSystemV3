@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface AdminService{
 
-    boolean login(String email, String password) throws CouponSystemException;
     void addCompany(Company company) throws CouponSystemException;
     void updateCompany(Company company) throws CouponSystemException;
     void deleteCompany(int companyID) throws CouponSystemException;

@@ -4,6 +4,7 @@ import com.jb.csv3.entity.Coupon;
 import com.jb.csv3.entity.Customer;
 import com.jb.csv3.enums.Category;
 import com.jb.csv3.exeptions.CouponSystemException;
+import com.jb.csv3.login.ClientService;
 import com.jb.csv3.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,13 @@ import java.util.List;
 public class CustomerController extends ClientController{
 
     @Autowired
+    private ClientService clientService;
+    @Autowired
     private CustomerService customerService;
 
     @PostMapping("login")
     public boolean login(@RequestParam String email, @RequestParam String password) throws CouponSystemException {
-        return customerService.login(email, password);
+        return clientService.login(email, password);
     }
 
     @PostMapping("{id}/coupons")

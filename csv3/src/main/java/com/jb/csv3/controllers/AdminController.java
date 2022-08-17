@@ -3,6 +3,7 @@ package com.jb.csv3.controllers;
 import com.jb.csv3.entity.Company;
 import com.jb.csv3.entity.Customer;
 import com.jb.csv3.exeptions.CouponSystemException;
+import com.jb.csv3.login.ClientService;
 import com.jb.csv3.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,13 @@ import java.util.List;
 public class AdminController extends ClientController{
 
     @Autowired
+    private ClientService clientService;
+    @Autowired
     private AdminService adminService;
 
     @PostMapping("login")
     public boolean login(@RequestParam String email, @RequestParam String password) throws CouponSystemException {
-        return adminService.login(email, password);
+        return clientService.login(email, password);
     }
 
     @PostMapping("companies")

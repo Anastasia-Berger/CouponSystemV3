@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 public class LoginManager {
 
     @Autowired
+    private ClientService clientService;
+
+    @Autowired
     private AdminService adminService;
     @Autowired
     private CompanyService companyService;
@@ -24,19 +27,19 @@ public class LoginManager {
 
             case ADMINISTRATOR:
 
-                if (adminService.login(email, password)) {
+                if (clientService.login(email, password)) {
                     return (ClientService) adminService;
                 }
                 break;
 
             case COMPANY:
-                if (companyService.login(email, password)) {
+                if (clientService.login(email, password)) {
                     return (ClientService) companyService;
                 }
                 break;
 
             case CUSTOMER:
-                if (customerService.login(email, password)) {
+                if (clientService.login(email, password)) {
                     return (ClientService) customerService;
                 }
                 break;

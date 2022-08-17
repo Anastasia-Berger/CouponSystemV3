@@ -19,6 +19,6 @@ public abstract class ClientController {
 
     @PostMapping("login")
     public boolean login(@RequestParam String email, @RequestParam String password) throws CouponSystemException {
-        return true;
+        return clientService.login(email, password);
     }
 }
