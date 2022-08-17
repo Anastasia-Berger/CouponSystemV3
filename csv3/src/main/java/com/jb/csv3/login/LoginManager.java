@@ -22,7 +22,7 @@ public class LoginManager {
     @Autowired
     private CustomerService customerService;
 
-    public ClientService login(ClientType clientType, String email, String password) throws CouponSystemException {
+    public ClientService login(String email, String password, ClientType clientType) throws CouponSystemException {
         switch (clientType) {
 
             case ADMINISTRATOR:
