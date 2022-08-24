@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface CompanyService {
 
+    boolean login(String email, String password) throws CouponSystemException;
     void addCoupon(int companyID, Coupon coupon) throws CouponSystemException;
     void updateCoupon(int companyID, Coupon coupon) throws CouponSystemException;
     void deleteCoupon(int companyID, int couponID) throws CouponSystemException;

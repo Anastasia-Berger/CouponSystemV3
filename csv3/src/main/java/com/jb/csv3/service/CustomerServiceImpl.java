@@ -5,13 +5,14 @@ import com.jb.csv3.entity.Customer;
 import com.jb.csv3.enums.Category;
 import com.jb.csv3.exeptions.CouponSystemException;
 import com.jb.csv3.exeptions.ErrMsg;
-import com.jb.csv3.login.ClientService;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Scope("prototype")
 public class CustomerServiceImpl extends ClientService implements CustomerService {
 
     @Override

@@ -1,18 +1,18 @@
 package com.jb.csv3.service;
 
 import com.jb.csv3.entity.Company;
+import com.jb.csv3.entity.Coupon;
 import com.jb.csv3.entity.Customer;
 import com.jb.csv3.exeptions.CouponSystemException;
 import com.jb.csv3.exeptions.ErrMsg;
-import com.jb.csv3.login.ClientService;
-import org.springframework.context.annotation.Lazy;
+import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Primary
 public class AdminServiceImpl extends ClientService implements AdminService {
 
     @Override
@@ -102,5 +102,10 @@ public class AdminServiceImpl extends ClientService implements AdminService {
     @Override
     public Customer getOneCustomer(int customerID) {
         return customerRepository.findById(customerID).get();
+    }
+
+    @Override
+    public List<Coupon> getAllCoupons() {
+        return couponRepository.findAll();
     }
 }

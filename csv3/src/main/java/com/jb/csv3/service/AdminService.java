@@ -1,13 +1,14 @@
 package com.jb.csv3.service;
 
 import com.jb.csv3.entity.Company;
+import com.jb.csv3.entity.Coupon;
 import com.jb.csv3.entity.Customer;
 import com.jb.csv3.exeptions.CouponSystemException;
 
 import java.util.List;
 
 public interface AdminService{
-
+    boolean login(String email, String password) throws CouponSystemException;
     void addCompany(Company company) throws CouponSystemException;
     void updateCompany(Company company) throws CouponSystemException;
     void deleteCompany(int companyID) throws CouponSystemException;
@@ -18,5 +19,6 @@ public interface AdminService{
     void deleteCustomer(int customerID) throws CouponSystemException;
     List<Customer> getAllCustomers();
     Customer getOneCustomer(int customerID);
+    List<Coupon> getAllCoupons();
 
 }

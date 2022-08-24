@@ -4,28 +4,32 @@ import com.jb.csv3.entity.Company;
 import com.jb.csv3.entity.Coupon;
 import com.jb.csv3.enums.Category;
 import com.jb.csv3.exeptions.CouponSystemException;
-import com.jb.csv3.login.ClientService;
+import com.jb.csv3.login.LoginManager;
+import com.jb.csv3.service.ClientService;
 import com.jb.csv3.service.CompanyService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("companies")
-public class CompanyController extends ClientController {
+@CrossOrigin
+
+// TODO: 21/08/2022 re-add extends LoginController
+public class CompanyController{
 
     @Autowired
     private ClientService clientService;
     @Autowired
     private CompanyService companyService;
+    @Autowired
+    private LoginManager loginManager;
 
-    @PostMapping("login")
-    public boolean login(@RequestParam String email, @RequestParam String password) throws CouponSystemException {
-        return clientService.login(email, password);
-    }
+//    @PostMapping("login")
+//    public ClientService login(@RequestParam String email, @RequestParam String password) throws CouponSystemException {
+//        return loginManager.login(email, password, ClientType.COMPANY);
+//    }
 
     @PostMapping("{id}/coupons")
     public void addCoupon(@PathVariable int id, @RequestBody Coupon coupon) throws CouponSystemException{

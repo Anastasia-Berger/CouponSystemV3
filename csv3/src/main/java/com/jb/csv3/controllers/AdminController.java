@@ -1,30 +1,35 @@
 package com.jb.csv3.controllers;
 
 import com.jb.csv3.entity.Company;
+import com.jb.csv3.entity.Coupon;
 import com.jb.csv3.entity.Customer;
 import com.jb.csv3.exeptions.CouponSystemException;
-import com.jb.csv3.login.ClientService;
+import com.jb.csv3.login.LoginManager;
 import com.jb.csv3.service.AdminService;
-import lombok.RequiredArgsConstructor;
+import com.jb.csv3.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("admin")
-public class AdminController extends ClientController{
+@CrossOrigin
+
+// TODO: 21/08/2022 re-add extends LoginController
+public class AdminController{
 
     @Autowired
     private ClientService clientService;
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private LoginManager loginManager;
 
-    @PostMapping("login")
-    public boolean login(@RequestParam String email, @RequestParam String password) throws CouponSystemException {
-        return clientService.login(email, password);
-    }
+//    @PostMapping("login")
+//    public ClientService login(@RequestParam String email, @RequestParam String password) throws CouponSystemException {
+//            return loginManager.login(email, password, ClientType.ADMINISTRATOR);
+//    }
 
     @PostMapping("companies")
     public void addCompany(@RequestBody Company company) throws CouponSystemException {
@@ -74,6 +79,11 @@ public class AdminController extends ClientController{
     @GetMapping("customers/{customerID}")
     public Customer getOneCustomer(@PathVariable int customerID) {
         return adminService.getOneCustomer(customerID);
+    }
+
+    @GetMapping("coupons")
+    public List<Coupon> getAllCoupons() {
+        return adminService.getAllCoupons();
     }
 
 }
