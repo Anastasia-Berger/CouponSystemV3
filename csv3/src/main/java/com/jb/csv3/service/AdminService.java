@@ -1,8 +1,9 @@
 package com.jb.csv3.service;
 
-import com.jb.csv3.entity.Company;
-import com.jb.csv3.entity.Coupon;
-import com.jb.csv3.entity.Customer;
+import com.jb.csv3.beans.Company;
+import com.jb.csv3.beans.Coupon;
+import com.jb.csv3.beans.Customer;
+import com.jb.csv3.enums.Category;
 import com.jb.csv3.exeptions.CouponSystemException;
 
 import java.util.List;
@@ -20,5 +21,6 @@ public interface AdminService{
     List<Customer> getAllCustomers();
     Customer getOneCustomer(int customerID);
     List<Coupon> getAllCoupons();
+    int count();
 
 }

@@ -1,15 +1,17 @@
 package com.jb.csv3.service;
 
-import com.jb.csv3.entity.Company;
-import com.jb.csv3.entity.Coupon;
-import com.jb.csv3.entity.Customer;
+import com.jb.csv3.beans.Company;
+import com.jb.csv3.beans.Coupon;
+import com.jb.csv3.beans.Customer;
+import com.jb.csv3.enums.Category;
 import com.jb.csv3.exeptions.CouponSystemException;
 import com.jb.csv3.exeptions.ErrMsg;
-import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Primary
@@ -107,5 +109,10 @@ public class AdminServiceImpl extends ClientService implements AdminService {
     @Override
     public List<Coupon> getAllCoupons() {
         return couponRepository.findAll();
+    }
+
+    @Override
+    public int count() {
+        return (int) couponRepository.count();
     }
 }

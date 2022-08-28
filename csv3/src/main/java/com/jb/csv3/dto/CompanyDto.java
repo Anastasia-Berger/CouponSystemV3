@@ -1,21 +1,17 @@
-package com.jb.csv3.entity;
+package com.jb.csv3.dto;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.jb.csv3.exeptions.CouponSystemException;
-import com.jb.csv3.exeptions.ErrMsg;
+import com.jb.csv3.beans.Coupon;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "companies")
-@NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class Company {
+public class CompanyDto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,10 +31,6 @@ public class Company {
     @Singular
     private List<Coupon> coupons = new ArrayList<>();
 
-    public void setId(int id) throws CouponSystemException {
-        if (this.id == 0) {
-            this.id = id;
-        }
-        throw new CouponSystemException(ErrMsg.ILLEGAL_ACTION_EXCEPTION);
-    }
+    private String image;
+
 }

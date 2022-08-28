@@ -1,7 +1,7 @@
 package com.jb.csv3.service;
 
-import com.jb.csv3.entity.Company;
-import com.jb.csv3.entity.Coupon;
+import com.jb.csv3.beans.Company;
+import com.jb.csv3.beans.Coupon;
 import com.jb.csv3.enums.Category;
 import com.jb.csv3.exeptions.CouponSystemException;
 

@@ -1,8 +1,8 @@
 package com.jb.csv3.clr;
 
-import com.jb.csv3.entity.Company;
-import com.jb.csv3.entity.Coupon;
-import com.jb.csv3.entity.Customer;
+import com.jb.csv3.beans.Company;
+import com.jb.csv3.beans.Coupon;
+import com.jb.csv3.beans.Customer;
 import com.jb.csv3.enums.Category;
 import com.jb.csv3.repository.CompanyRepository;
 import com.jb.csv3.repository.CouponRepository;
@@ -18,8 +18,6 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 @Component
 @Order(1)

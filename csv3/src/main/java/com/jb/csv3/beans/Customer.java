@@ -1,4 +1,4 @@
-package com.jb.csv3.entity;
+package com.jb.csv3.beans;
 
 import lombok.*;
 
@@ -29,4 +29,6 @@ public class Customer {
 
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Coupon> coupons = new ArrayList<>();
+
+    private String image;
 }

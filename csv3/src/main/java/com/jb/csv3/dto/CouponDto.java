@@ -1,23 +1,20 @@
-package com.jb.csv3.entity;
+package com.jb.csv3.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jb.csv3.enums.Category;
-import com.jb.csv3.exeptions.CouponSystemException;
-import com.jb.csv3.exeptions.ErrMsg;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.sql.Date;
 
-@Entity
-@Table(name = "coupons")
-@NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class Coupon {
-
+public class CouponDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -36,9 +33,9 @@ public class Coupon {
 
     private String description;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @DateTimeFormat(pattern = "DD/MM/YYYY")
     private Date startDate;
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @DateTimeFormat(pattern = "DD/MM/YYYY")
     private Date endDate;
 
     @Column(nullable = false)
@@ -47,12 +44,4 @@ public class Coupon {
     @Column(nullable = false)
     private double price;
     private String image;
-
-    public void setId(int id) throws CouponSystemException {
-        if (this.id == 0) {
-            this.id = id;
-        }
-        throw new CouponSystemException(ErrMsg.ILLEGAL_ACTION_EXCEPTION);
-    }
-
 }

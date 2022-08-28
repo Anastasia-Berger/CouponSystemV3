@@ -1,64 +1,64 @@
-//package com.jb.csv3.clr;
-//
-//import com.jb.csv3.entity.Company;
-//import com.jb.csv3.entity.Customer;
-//import com.jb.csv3.exeptions.CouponSystemException;
-//import com.jb.csv3.login.ClientService;
-//import com.jb.csv3.login.LoginManager;
-//import com.jb.csv3.entity.Coupon;
-//import com.jb.csv3.enums.Category;
-//import com.jb.csv3.enums.ClientType;
-//import com.jb.csv3.repository.CompanyRepository;
-//import com.jb.csv3.repository.CouponRepository;
-//import com.jb.csv3.repository.CustomerRepository;
-//import com.jb.csv3.service.*;
-//import com.jb.csv3.utils.TablePrinter;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.CommandLineRunner;
-//import org.springframework.core.annotation.Order;
-//import org.springframework.stereotype.Component;
-//
-//import java.sql.Date;
-//import java.time.LocalDate;
-//import java.util.List;
-//
+package com.jb.csv3.clr;
+
+import com.jb.csv3.beans.Company;
+import com.jb.csv3.beans.Coupon;
+import com.jb.csv3.beans.Customer;
+import com.jb.csv3.exeptions.CouponSystemException;
+import com.jb.csv3.login.LoginManager;
+import com.jb.csv3.enums.Category;
+import com.jb.csv3.enums.ClientType;
+import com.jb.csv3.repository.CompanyRepository;
+import com.jb.csv3.repository.CouponRepository;
+import com.jb.csv3.repository.CustomerRepository;
+import com.jb.csv3.service.*;
+import com.jb.csv3.utils.TablePrinter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
+
 
 // TODO: 17/08/2022 :service test rewrite
-//@Component
-//@Order(2)
-//public class ServicesTest implements CommandLineRunner {
-//
-//    @Autowired
-//    private LoginManager loginManager;
-//
-//    @Autowired
-//    private ClientService clientService;
-//    @Autowired
-//    private AdminServiceImpl adminServiceImpl;
-//    @Autowired
-//    private CompanyServiceImpl companyServiceImpl;
-//    @Autowired
-//    private CustomerServiceImpl customerServiceImpl;
-//
-//    @Autowired
-//    private CouponRepository couponRepository;
-//    @Autowired
-//    private CompanyRepository companyRepository;
-//    @Autowired
-//    private CustomerRepository customerRepository;
-//
-//    @Override
-//    public void run(String... args) throws Exception {
-//        System.out.println("ADMIN SERVICE TEST");
-//
+
+@Component
+@Order(2)
+public class ServicesTest implements CommandLineRunner {
+
+    @Autowired
+    private LoginManager loginManager;
+
+    @Autowired
+    private ClientService clientService;
+    @Autowired
+    private AdminService adminService;
+    @Autowired
+    private CompanyServiceImpl companyServiceImpl;
+    @Autowired
+    private CustomerServiceImpl customerServiceImpl;
+
+    @Autowired
+    private CouponRepository couponRepository;
+    @Autowired
+    private CompanyRepository companyRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Override
+    public void run(String... args) throws Exception {
+        System.out.println("ADMIN SERVICE TEST");
+
 //        ClientService adminGoodLogin = null;
 //        try {
-//            adminGoodLogin = loginManager.login(ClientType.ADMINISTRATOR, "admin@admin.com", "admin");
+//            adminGoodLogin = loginManager.login( "admin@admin.com", "admin", ClientType.ADMINISTRATOR,);
 //        } catch (Exception e) {
 //            System.out.println(e.getMessage());
 //        }
 //
-//        System.out.println("ADMIN IS ON THE BOARD : " + adminGoodLogin.getClass());
+//        System.out.println("ADMIN IS ON THE BOARD : " + adminGoodLogin.getClass().getName());
 //
 //        AdminServiceImpl adminLogin = (AdminServiceImpl) adminGoodLogin;
 //
@@ -126,7 +126,7 @@
 //
 //        ClientService companyGoodLogin = null;
 //        try {
-//            companyGoodLogin = loginManager.login(ClientType.COMPANY, "company1@mail.com", "company1234");
+//            companyGoodLogin = loginManager.login("company1@mail.com", "company1234", ClientType.COMPANY);
 //        } catch (Exception e) {
 //            System.out.println(e.getMessage());
 //        }
@@ -224,6 +224,6 @@
 //
 //        System.out.println("getCustomerDetails");
 //        TablePrinter.print(cstmrLogin.getCustomerDetails());
-//
-//    }
-//}
+
+    }
+}

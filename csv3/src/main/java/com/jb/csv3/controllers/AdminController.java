@@ -1,12 +1,14 @@
 package com.jb.csv3.controllers;
 
-import com.jb.csv3.entity.Company;
-import com.jb.csv3.entity.Coupon;
-import com.jb.csv3.entity.Customer;
+import com.jb.csv3.beans.Company;
+import com.jb.csv3.beans.Coupon;
+import com.jb.csv3.beans.Customer;
+import com.jb.csv3.enums.Category;
 import com.jb.csv3.exeptions.CouponSystemException;
 import com.jb.csv3.login.LoginManager;
 import com.jb.csv3.service.AdminService;
 import com.jb.csv3.service.ClientService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +16,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("admin")
-@CrossOrigin
+@RequiredArgsConstructor
+@CrossOrigin(origins = "*" /*,allowedHeaders = "*"*/)
 
 // TODO: 21/08/2022 re-add extends LoginController
 public class AdminController{
@@ -84,6 +87,11 @@ public class AdminController{
     @GetMapping("coupons")
     public List<Coupon> getAllCoupons() {
         return adminService.getAllCoupons();
+    }
+
+    @GetMapping("coupons/count")
+    public int count() {
+        return adminService.count();
     }
 
 }
