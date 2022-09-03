@@ -6,14 +6,11 @@ public enum ErrMsg {
 
     // throw new CouponSystemException(ErrMsg.XXXXXXXX);
 
-    ID_NOT_EXIST("ID not found", HttpStatus.NOT_FOUND),
-    ID_ALREADY_EXIST("ID already exist", HttpStatus.CONFLICT),
 
     DUPLICATE_COMPANY_NAME("That company name already exist, please contact us if you need help.", HttpStatus.CONFLICT),
     DUPLICATE_COUPON_TITLE("Your company already has coupon with same title, choose another title or update amount of existing coupon.", HttpStatus.CONFLICT),
 
     COMPANY_DOESNT_EXIST("Company doesnt exist", HttpStatus.NOT_FOUND),
-    EMAIL_ALREADY_EXIST("Email already exist", HttpStatus.CONFLICT),
     ILLEGAL_ACTION_EXCEPTION("Illegal Action", HttpStatus.FORBIDDEN),
     ZERO_VALUE("The value cannot be less or equal to zero", HttpStatus.NOT_FOUND),
 
@@ -25,7 +22,15 @@ public enum ErrMsg {
     ALREADY_PURCHASED("Coupon is already purchased by you.", HttpStatus.CONFLICT),
     TOKEN_NOT_EXIST("Token not recognised", HttpStatus.NOT_FOUND),
     UNAUTHORIZED_EVENT("Unauthorized event", HttpStatus.UNAUTHORIZED),
-    COUPON_IS_OUT_OF_STOCK("Coupon is out of stock", HttpStatus.NO_CONTENT);
+    COUPON_IS_OUT_OF_STOCK("Coupon is out of stock", HttpStatus.NO_CONTENT),
+
+    ID_NOT_EXIST("Id Not Exist", HttpStatus.NOT_FOUND),
+    ID_ALREADY_EXIST("ID already exist", HttpStatus.CONFLICT),
+    EMAIL_ALREADY_EXIST("Email already exist", HttpStatus.CONFLICT),
+    EMAIL_OR_PASSWORD_INCORRECT("Wrong email or password", HttpStatus.UNAUTHORIZED),
+    USER_ID_NOT_FOUND("Hi...login please", HttpStatus.UNAUTHORIZED),
+    USER_ID_NOT_MATCH_TASK("Invalid Operation", HttpStatus.FORBIDDEN),
+    AUTH("NOT AUTHORIZED", HttpStatus.UNAUTHORIZED);
 
     private String description;
     private HttpStatus status;

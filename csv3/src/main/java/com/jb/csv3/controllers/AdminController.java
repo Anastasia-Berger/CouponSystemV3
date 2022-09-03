@@ -10,14 +10,15 @@ import com.jb.csv3.service.AdminService;
 import com.jb.csv3.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("admin")
+@RequestMapping("api/admin")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*" /*,allowedHeaders = "*"*/)
+@CrossOrigin(origins = "*",allowedHeaders = "*")
 
 // TODO: 21/08/2022 re-add extends LoginController
 public class AdminController{
@@ -35,16 +36,18 @@ public class AdminController{
 //    }
 
     @PostMapping("companies")
+    @ResponseStatus(HttpStatus.CREATED)
     public void addCompany(@RequestBody Company company) throws CouponSystemException {
         adminService.addCompany(company);
     }
 
-    @PutMapping("companies")
+    @PutMapping("{companyID}")
     public void updateCompany(@RequestBody Company company) throws CouponSystemException {
         adminService.updateCompany(company);
     }
 
     @DeleteMapping("companies/{companyID}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCompany(@PathVariable int companyID) throws CouponSystemException {
         adminService.deleteCompany(companyID);
     }
@@ -60,6 +63,7 @@ public class AdminController{
     }
 
     @PostMapping("customers")
+    @ResponseStatus(HttpStatus.CREATED)
     public void addCustomer(@RequestBody Customer customer) throws CouponSystemException {
         adminService.addCustomer(customer);
     }
@@ -69,7 +73,8 @@ public class AdminController{
         adminService.updateCustomer(customer);
     }
 
-    @DeleteMapping("customers")
+    @DeleteMapping("{customerID}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCustomer(@PathVariable int customerID) throws CouponSystemException {
         adminService.deleteCustomer(customerID);
     }

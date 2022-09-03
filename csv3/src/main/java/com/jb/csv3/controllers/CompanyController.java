@@ -9,14 +9,15 @@ import com.jb.csv3.service.ClientService;
 import com.jb.csv3.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("companies")
+@RequestMapping("api/companies")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*" /*,allowedHeaders = "*"*/)
+@CrossOrigin(origins = "*",allowedHeaders = "*")
 
 // TODO: 21/08/2022 re-add extends LoginController
 public class CompanyController{
@@ -33,38 +34,40 @@ public class CompanyController{
 //        return loginManager.login(email, password, ClientType.COMPANY);
 //    }
 
-    @PostMapping("{id}/coupons")
-    public void addCoupon(@PathVariable int id, @RequestBody Coupon coupon) throws CouponSystemException{
-        companyService.addCoupon(id, coupon);
+    @PostMapping("{companyID}/coupons")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addCoupon(@PathVariable int companyID, @RequestBody Coupon coupon) throws CouponSystemException{
+        companyService.addCoupon(companyID, coupon);
     }
 
-    @PutMapping("{id}/coupons")
-    public void updateCoupon(@PathVariable int id,@RequestBody Coupon coupon) throws CouponSystemException{
-        companyService.updateCoupon(id, coupon);
+    @PutMapping("{companyID}/coupons")
+    public void updateCoupon(@PathVariable int companyID,@RequestBody Coupon coupon) throws CouponSystemException{
+        companyService.updateCoupon(companyID, coupon);
     }
 
-    @DeleteMapping("{id}/coupons/{couponID}")
-    public void deleteCoupon(@PathVariable int id, @PathVariable int couponID) throws CouponSystemException{
-        companyService.deleteCoupon(id, couponID);
+    @DeleteMapping("{companyID}/coupons/{couponID}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCoupon(@PathVariable int companyID, @PathVariable int couponID) throws CouponSystemException{
+        companyService.deleteCoupon(companyID, couponID);
     }
 
-    @GetMapping("{id}/coupons")
-    public List<Coupon> getCompanyCoupons(@PathVariable int id){
-        return companyService.getCompanyCoupons(id);
+    @GetMapping("{companyID}/coupons")
+    public List<Coupon> getCompanyCoupons(@PathVariable int companyID){
+        return companyService.getCompanyCoupons(companyID);
     }
 
-    @GetMapping("{id}/coupons/{category}")
-    public List<Coupon> getCompanyCoupons(@PathVariable int id, @PathVariable Category category){
-        return companyService.getCompanyCoupons(id, category);
+    @GetMapping("{companyID}/coupons/{category}")
+    public List<Coupon> getCompanyCoupons(@PathVariable int companyID, @PathVariable Category category){
+        return companyService.getCompanyCoupons(companyID, category);
     }
 
     @GetMapping("coupons/{maxPrice}")
-    public List<Coupon> getCompanyCoupons(@RequestParam int id, double maxPrice){
-        return companyService.getCompanyCoupons(id, maxPrice);
+    public List<Coupon> getCompanyCoupons(@RequestParam int companyID, double maxPrice){
+        return companyService.getCompanyCoupons(companyID, maxPrice);
     }
 
-    @GetMapping("{id}/details")
-    Company getCompanyDetails(@PathVariable int id){
-        return companyService.getCompanyDetails(id);
+    @GetMapping("{companyID}/details")
+    Company getCompanyDetails(@PathVariable int companyID){
+        return companyService.getCompanyDetails(companyID);
     }
 }

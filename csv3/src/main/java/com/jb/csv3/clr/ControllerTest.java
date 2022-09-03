@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-@Order(3)
+@Order(4)
 public class ControllerTest implements CommandLineRunner {
 
     // TODO: 17/08/2022 : controllers test

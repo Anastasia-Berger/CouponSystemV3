@@ -12,6 +12,7 @@ import com.jb.csv3.repository.CouponRepository;
 import com.jb.csv3.repository.CustomerRepository;
 import com.jb.csv3.service.*;
 import com.jb.csv3.utils.TablePrinter;
+import com.jb.csv3.utils.Titles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -25,7 +26,7 @@ import java.util.List;
 // TODO: 17/08/2022 :service test rewrite
 
 @Component
-@Order(2)
+@Order(3)
 public class ServicesTest implements CommandLineRunner {
 
     @Autowired
@@ -49,7 +50,10 @@ public class ServicesTest implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("ADMIN SERVICE TEST");
+
+        System.out.println(" ");
+        System.out.println(Titles.SERVICE_TEST);
+        System.out.println("   **********          ADMIN SERVICE TEST          ********** \n");
 
 //        ClientService adminGoodLogin = null;
 //        try {

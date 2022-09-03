@@ -5,14 +5,14 @@ import com.jb.csv3.beans.Coupon;
 import com.jb.csv3.enums.Category;
 import com.jb.csv3.exeptions.CouponSystemException;
 import com.jb.csv3.exeptions.ErrMsg;
-import org.springframework.context.annotation.Scope;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Scope("prototype")
+@RequiredArgsConstructor
 public class CompanyServiceImpl extends ClientService implements CompanyService {
 
     @Override
@@ -42,7 +42,9 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
         }
 
         // Associates coupon with the owner company
-        coupon.setCompanyId(companyID);
+        Company company = companyRepository.findById(companyID).get();
+        coupon.setCompany(company);
+
         // Adding the new coupon to repository
         couponRepository.save(coupon);
 
@@ -59,7 +61,7 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
         }
 
         // Checks if company is the owner of the coupon
-        if (coupon.getCompanyId() != companyID) {
+        if (coupon.getCompany().getId() != companyID) {
             throw new CouponSystemException(ErrMsg.UNAUTHORIZED_EVENT);
         }
 

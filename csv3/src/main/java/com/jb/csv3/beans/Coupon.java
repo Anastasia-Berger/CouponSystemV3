@@ -1,6 +1,7 @@
 package com.jb.csv3.beans;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jb.csv3.enums.Category;
 import com.jb.csv3.exeptions.CouponSystemException;
 import com.jb.csv3.exeptions.ErrMsg;
@@ -22,11 +23,12 @@ public class Coupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-//    @ManyToOne
-//    private Company company;
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private Company company;
 
-    @Column(name = "company_id")
-    private int companyId;
+//    @Column(name = "company_id", insertable = false)
+//    private int companyId;
 
     @Enumerated(EnumType.STRING)
     private Category category;

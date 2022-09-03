@@ -7,17 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerDto {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, length = 50)
     private String firstName;
-    @Column(nullable = false, length = 50)
     private String lastName;
-    @Column(nullable = false)
     private String email;
-    @Column(nullable = false)
     private String password;
 
     @ManyToMany(cascade = CascadeType.ALL)

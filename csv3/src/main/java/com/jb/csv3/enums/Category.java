@@ -6,7 +6,8 @@ public enum Category {
     VACATION,
     CLOTHING,
     TOYS,
-    HEALTH,
-    ELECTRONICS
-
+    PHARMA,
+    SPORTS,
+    ELECTRONICS,
+    GAMING
 }

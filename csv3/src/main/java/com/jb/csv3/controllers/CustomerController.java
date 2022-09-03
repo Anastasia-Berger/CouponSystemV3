@@ -9,14 +9,15 @@ import com.jb.csv3.service.ClientService;
 import com.jb.csv3.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("customers")
+@RequestMapping("api/customers")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*" /*,allowedHeaders = "*"*/)
+@CrossOrigin(origins = "*",allowedHeaders = "*")
 
 // TODO: 21/08/2022 re-add extends LoginController
 public class CustomerController{
@@ -34,6 +35,7 @@ public class CustomerController{
 //    }
 
     @PostMapping("{id}/coupons")
+    @ResponseStatus(HttpStatus.CREATED)
     void purchaseCoupon(@PathVariable int id, @RequestBody Coupon coupon) throws CouponSystemException{
         customerService.purchaseCoupon(id, coupon);
     }

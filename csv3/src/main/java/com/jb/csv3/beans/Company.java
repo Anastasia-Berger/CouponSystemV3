@@ -20,17 +20,19 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, length = 50)
+    @Column(unique = true, length = 40, updatable = false)
     private String name;
 
-    @Column(nullable = false, length = 50)
+    @Column(unique = true, length = 40)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "company_id")
+    @ToString.Exclude
+    //    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "company")
+//    @JoinColumn(name = "company_id")
     @Singular
     private List<Coupon> coupons = new ArrayList<>();
 
