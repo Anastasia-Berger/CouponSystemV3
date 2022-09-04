@@ -1,14 +1,11 @@
 package com.jb.csv3.controllers;
 
-import com.jb.csv3.beans.Coupon;
-import com.jb.csv3.beans.Customer;
+import com.jb.csv3.dto.beansDto.CouponDto;
+import com.jb.csv3.dto.beansDto.CustomerDto;
 import com.jb.csv3.enums.Category;
 import com.jb.csv3.exeptions.CouponSystemException;
-import com.jb.csv3.login.LoginManager;
-import com.jb.csv3.service.ClientService;
 import com.jb.csv3.service.CustomerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,46 +14,34 @@ import java.util.List;
 @RestController
 @RequestMapping("api/customers")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*",allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+public class CustomerController {
 
-// TODO: 21/08/2022 re-add extends LoginController
-public class CustomerController{
+    private final CustomerService customerService;
 
-    @Autowired
-    private ClientService clientService;
-    @Autowired
-    private CustomerService customerService;
-    @Autowired
-    private LoginManager loginManager;
-
-//    @PostMapping("login")
-//    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) throws CouponSystemException {
-//        return new ResponseEntity<>(loginManager.login(email, password, ClientType.CUSTOMER), HttpStatus.OK);
-//    }
-
-    @PostMapping("{id}/coupons")
+    @PostMapping("{customerID}/coupons")
     @ResponseStatus(HttpStatus.CREATED)
-    void purchaseCoupon(@PathVariable int id, @RequestBody Coupon coupon) throws CouponSystemException{
-        customerService.purchaseCoupon(id, coupon);
+    CouponDto purchaseCoupon(@PathVariable int customerID, @RequestBody CouponDto couponDto) throws CouponSystemException {
+        return customerService.purchaseCoupon(customerID, couponDto);
     }
 
-    @GetMapping("{id}/coupons")
-    public List<Coupon> getCustomerCoupons(@PathVariable int id){
-        return customerService.getCustomerCoupons(id);
+    @GetMapping("{customerID}/coupons")
+    public List<CouponDto> getCustomerCoupons(@PathVariable int customerID) {
+        return customerService.getCustomerCoupons(customerID);
     }
 
-    @GetMapping("{id}/coupons/{category}")
-    public List<Coupon> getCustomerCoupons(@PathVariable int id, @PathVariable Category category){
-        return customerService.getCustomerCoupons(id, category);
+    @GetMapping("{customerID}/coupons/{category}")
+    public List<CouponDto> getCustomerCoupons(@PathVariable int customerID, @PathVariable Category category) {
+        return customerService.getCustomerCoupons(customerID, category);
     }
 
-    @GetMapping("{id}/coupons/{maxPrice}")
-    public List<Coupon> getCustomerCoupons(@PathVariable int id, @PathVariable double maxPrice){
-        return customerService.getCustomerCoupons(id, maxPrice);
+    @GetMapping("{customerID}/coupons/{maxPrice}")
+    public List<CouponDto> getCustomerCoupons(@PathVariable int customerID, @PathVariable double maxPrice) {
+        return customerService.getCustomerCoupons(customerID, maxPrice);
     }
 
-    @GetMapping("{id}/details")
-    public Customer getCustomerDetails(@PathVariable int id){
-        return customerService.getCustomerDetails(id);
+    @GetMapping("{customerID}/details")
+    public CustomerDto getCustomerDetails(@PathVariable int customerID) {
+        return customerService.getCustomerDetails(customerID);
     }
 }

@@ -1,26 +1,30 @@
 package com.jb.csv3.service;
 
-import com.jb.csv3.beans.Company;
-import com.jb.csv3.beans.Coupon;
-import com.jb.csv3.beans.Customer;
-import com.jb.csv3.enums.Category;
+import com.jb.csv3.dto.beansDto.CompanyDto;
+import com.jb.csv3.dto.beansDto.CouponDto;
+import com.jb.csv3.dto.beansDto.CustomerDto;
 import com.jb.csv3.exeptions.CouponSystemException;
 
 import java.util.List;
 
 public interface AdminService{
+
     boolean login(String email, String password) throws CouponSystemException;
-    void addCompany(Company company) throws CouponSystemException;
-    void updateCompany(Company company) throws CouponSystemException;
+    void logout();
+
+    CompanyDto addCompany(CompanyDto companyDto) throws CouponSystemException;
+    CompanyDto updateCompany(int companyID, CompanyDto CompanyDto) throws CouponSystemException;
     void deleteCompany(int companyID) throws CouponSystemException;
-    List<Company> getAllCompanies();
-    Company getOneCompany(int companyID);
-    void addCustomer(Customer customer) throws CouponSystemException;
-    void updateCustomer(Customer customer) throws CouponSystemException;
+    List<CompanyDto> getAllCompanies();
+    CompanyDto getOneCompany(int companyID) throws CouponSystemException;
+
+    CustomerDto addCustomer(CustomerDto customerDto) throws CouponSystemException;
+    CustomerDto updateCustomer(int customerID, CustomerDto customerDto) throws CouponSystemException;
     void deleteCustomer(int customerID) throws CouponSystemException;
-    List<Customer> getAllCustomers();
-    Customer getOneCustomer(int customerID);
-    List<Coupon> getAllCoupons();
+    List<CustomerDto> getAllCustomers();
+    CustomerDto getOneCustomer(int customerID);
+
+    List<CouponDto> getAllCoupons();
     int count();
 
 }

@@ -1,4 +1,4 @@
-package com.jb.csv3.dto;
+package com.jb.csv3.dto.beansDto;
 
 import com.jb.csv3.beans.Coupon;
 import lombok.*;
@@ -13,24 +13,11 @@ import java.util.List;
 @Builder
 public class CompanyDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(nullable = false, length = 50)
     private String name;
-
-    @Column(nullable = false, length = 50)
     private String email;
-
-    @Column(nullable = false)
     private String password;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "company_id")
-    @Singular
     private List<Coupon> coupons = new ArrayList<>();
-
     private String image;
 
 }

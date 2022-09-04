@@ -1,15 +1,11 @@
 package com.jb.csv3.controllers;
 
-import com.jb.csv3.beans.Company;
-import com.jb.csv3.beans.Coupon;
-import com.jb.csv3.beans.Customer;
-import com.jb.csv3.enums.Category;
+import com.jb.csv3.dto.beansDto.CompanyDto;
+import com.jb.csv3.dto.beansDto.CouponDto;
+import com.jb.csv3.dto.beansDto.CustomerDto;
 import com.jb.csv3.exeptions.CouponSystemException;
-import com.jb.csv3.login.LoginManager;
 import com.jb.csv3.service.AdminService;
-import com.jb.csv3.service.ClientService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,32 +14,21 @@ import java.util.List;
 @RestController
 @RequestMapping("api/admin")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*",allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 
-// TODO: 21/08/2022 re-add extends LoginController
-public class AdminController{
+public class AdminController {
 
-    @Autowired
-    private ClientService clientService;
-    @Autowired
-    private AdminService adminService;
-    @Autowired
-    private LoginManager loginManager;
-
-//    @PostMapping("login")
-//    public ClientService login(@RequestParam String email, @RequestParam String password) throws CouponSystemException {
-//            return loginManager.login(email, password, ClientType.ADMINISTRATOR);
-//    }
+    private final AdminService adminService;
 
     @PostMapping("companies")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addCompany(@RequestBody Company company) throws CouponSystemException {
-        adminService.addCompany(company);
+    public CompanyDto addCompany(@RequestBody CompanyDto companyDto) throws CouponSystemException {
+        return adminService.addCompany(companyDto);
     }
 
     @PutMapping("{companyID}")
-    public void updateCompany(@RequestBody Company company) throws CouponSystemException {
-        adminService.updateCompany(company);
+    public CompanyDto updateCompany(@PathVariable int companyID, @RequestBody CompanyDto companyDto) throws CouponSystemException {
+        return adminService.updateCompany(companyID, companyDto);
     }
 
     @DeleteMapping("companies/{companyID}")
@@ -53,24 +38,24 @@ public class AdminController{
     }
 
     @GetMapping("companies")
-    public List<Company> getAllCompanies() {
+    public List<CompanyDto> getAllCompanies() {
         return adminService.getAllCompanies();
     }
 
     @GetMapping("companies/{companyID}")
-    public Company getOneCompany(@PathVariable int companyID) {
+    public CompanyDto getOneCompany(@PathVariable int companyID) throws CouponSystemException {
         return adminService.getOneCompany(companyID);
     }
 
     @PostMapping("customers")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addCustomer(@RequestBody Customer customer) throws CouponSystemException {
-        adminService.addCustomer(customer);
+    public CustomerDto addCustomer(@RequestBody CustomerDto customerDto) throws CouponSystemException {
+        return adminService.addCustomer(customerDto);
     }
 
-    @PutMapping("customers")
-    public void updateCustomer(@RequestBody Customer customer) throws CouponSystemException {
-        adminService.updateCustomer(customer);
+    @PutMapping("customers/{customerID}")
+    public CustomerDto updateCustomer(@PathVariable int customerID, @RequestBody CustomerDto customerDto) throws CouponSystemException {
+        return adminService.updateCustomer(customerID, customerDto);
     }
 
     @DeleteMapping("{customerID}")
@@ -80,17 +65,17 @@ public class AdminController{
     }
 
     @GetMapping("customers")
-    public List<Customer> getAllCustomers() {
+    public List<CustomerDto> getAllCustomers() {
         return adminService.getAllCustomers();
     }
 
     @GetMapping("customers/{customerID}")
-    public Customer getOneCustomer(@PathVariable int customerID) {
+    public CustomerDto getOneCustomer(@PathVariable int customerID) {
         return adminService.getOneCustomer(customerID);
     }
 
     @GetMapping("coupons")
-    public List<Coupon> getAllCoupons() {
+    public List<CouponDto> getAllCoupons() {
         return adminService.getAllCoupons();
     }
 

@@ -1,26 +1,15 @@
 package com.jb.csv3.clr;
 
-import com.jb.csv3.beans.Company;
-import com.jb.csv3.beans.Coupon;
-import com.jb.csv3.beans.Customer;
-import com.jb.csv3.exeptions.CouponSystemException;
-import com.jb.csv3.login.LoginManager;
-import com.jb.csv3.enums.Category;
-import com.jb.csv3.enums.ClientType;
+import com.jb.csv3.security.LoginManager;
 import com.jb.csv3.repository.CompanyRepository;
 import com.jb.csv3.repository.CouponRepository;
 import com.jb.csv3.repository.CustomerRepository;
 import com.jb.csv3.service.*;
-import com.jb.csv3.utils.TablePrinter;
 import com.jb.csv3.utils.Titles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import java.sql.Date;
-import java.time.LocalDate;
-import java.util.List;
 
 
 // TODO: 17/08/2022 :service test rewrite

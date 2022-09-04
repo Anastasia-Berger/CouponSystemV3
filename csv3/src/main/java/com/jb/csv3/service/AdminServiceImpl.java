@@ -1,34 +1,48 @@
 package com.jb.csv3.service;
 
 import com.jb.csv3.beans.Company;
-import com.jb.csv3.beans.Coupon;
 import com.jb.csv3.beans.Customer;
-import com.jb.csv3.enums.Category;
+import com.jb.csv3.dto.beansDto.CompanyDto;
+import com.jb.csv3.dto.beansDto.CouponDto;
+import com.jb.csv3.dto.beansDto.CustomerDto;
 import com.jb.csv3.exeptions.CouponSystemException;
 import com.jb.csv3.exeptions.ErrMsg;
-import lombok.NoArgsConstructor;
+import com.jb.csv3.mappers.CompanyMapper;
+import com.jb.csv3.mappers.CouponMapper;
+import com.jb.csv3.mappers.CustomerMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 @Service
 @Primary
+@RequiredArgsConstructor
 public class AdminServiceImpl extends ClientService implements AdminService {
 
+    private final CompanyMapper companyMapper;
+    private final CustomerMapper customerMapper;
+    private final CouponMapper couponMapper;
+
     @Override
-    public boolean login(String email, String password) throws CouponSystemException {
-        if (!email.equals("admin@admin.com") || !password.equals("admin"))
+    public UUID login(String email, String password) throws CouponSystemException {
+        if(!email.equals("admin@admin.com") && password.equals("admin"))
             throw new CouponSystemException(ErrMsg.INCORRECT_LOGIN);
 
-        return true;
+        return tokenManager.addToken(information);
     }
 
     @Override
-    public void addCompany(Company company) throws CouponSystemException {
+    public void logout(UUID token) {
+
+    }
+
+    @Override
+    public CompanyDto addCompany(CompanyDto companyDto) throws CouponSystemException {
+        Company company = companyMapper.toDAO(companyDto);
+
         // Check name
         if (companyRepository.existsByName(company.getName())) {
             throw new CouponSystemException(ErrMsg.DUPLICATE_COMPANY_NAME);
@@ -39,16 +53,19 @@ public class AdminServiceImpl extends ClientService implements AdminService {
             throw new CouponSystemException(ErrMsg.EMAIL_ALREADY_EXIST);
         }
 
-        companyRepository.save(company);
+        return companyMapper.toDTO(companyRepository.save(company));
     }
 
     @Override
-    public void updateCompany(Company company) throws CouponSystemException {
+    public CompanyDto updateCompany(int companyID, CompanyDto companyDto) throws CouponSystemException {
+
+        Company company = companyMapper.toDAO(companyDto);
+
         // Checking if the company is exists for update
-        if (!companyRepository.existsById(company.getId())) {
+        if (!companyRepository.existsById(companyID)) {
             throw new CouponSystemException(ErrMsg.ID_NOT_EXIST);
         }
-        companyRepository.saveAndFlush(company);
+        return companyMapper.toDTO(companyRepository.saveAndFlush(company));
     }
 
     @Override
@@ -61,32 +78,36 @@ public class AdminServiceImpl extends ClientService implements AdminService {
     }
 
     @Override
-    public List<Company> getAllCompanies() {
-        return companyRepository.findAll();
+    public List<CompanyDto> getAllCompanies() {
+        return companyMapper.toDtoList(companyRepository.findAll());
     }
 
     @Override
-    public Company getOneCompany(int companyID) {
-        return companyRepository.findById(companyID).get();
+    public CompanyDto getOneCompany(int companyID) throws CouponSystemException {
+        Company company = companyRepository.findById(companyID).orElseThrow(() -> new CouponSystemException(ErrMsg.ID_NOT_EXIST));
+        return companyMapper.toDTO(company);
     }
 
     @Override
-    public void addCustomer(Customer customer) throws CouponSystemException {
+    public CustomerDto addCustomer(CustomerDto customerDto) throws CouponSystemException {
+        Customer customer = customerMapper.toDAO(customerDto);
         // Check e-mail
         if (customerRepository.existsByEmail((customer.getEmail()))) {
             throw new CouponSystemException(ErrMsg.EMAIL_ALREADY_EXIST);
         }
 
-        customerRepository.save(customer);
+        return customerMapper.toDTO(customerRepository.save(customer));
     }
 
     @Override
-    public void updateCustomer(Customer customer) throws CouponSystemException {
+    public CustomerDto updateCustomer(int customerID, CustomerDto customerDto) throws CouponSystemException {
+        Customer customer = customerMapper.toDAO(customerDto);
+
         // Checking if customer is exists
-        if (!customerRepository.existsById(customer.getId())) {
+        if (!customerRepository.existsById(customerID)) {
             throw new CouponSystemException(ErrMsg.ID_NOT_EXIST);
         }
-        customerRepository.saveAndFlush(customer);
+        return customerMapper.toDTO(customerRepository.saveAndFlush(customer));
     }
 
     @Override
@@ -99,22 +120,24 @@ public class AdminServiceImpl extends ClientService implements AdminService {
     }
 
     @Override
-    public List<Customer> getAllCustomers() {
-        return customerRepository.findAll();
+    public List<CustomerDto> getAllCustomers() {
+        return customerMapper.toDtoList(customerRepository.findAll());
     }
 
     @Override
-    public Customer getOneCustomer(int customerID) {
-        return customerRepository.findById(customerID).get();
+    public CustomerDto getOneCustomer(int customerID) {
+        return customerMapper.toDTO(customerRepository.findById(customerID).get());
     }
 
     @Override
-    public List<Coupon> getAllCoupons() {
-        return couponRepository.findAll();
+    public List<CouponDto> getAllCoupons() {
+        return couponMapper.toDtoList(couponRepository.findAll());
     }
 
     @Override
     public int count() {
         return (int) couponRepository.count();
     }
+
+
 }
