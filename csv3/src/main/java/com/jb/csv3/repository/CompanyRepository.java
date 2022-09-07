@@ -1,8 +1,12 @@
 package com.jb.csv3.repository;
 
 import com.jb.csv3.beans.Company;
+import com.jb.csv3.beans.Coupon;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Integer> {
@@ -15,7 +19,6 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
     boolean existsByEmailAndPassword(String email, String password);
     boolean findByEmailAndPassword(String email, String password);
 
-//    @Query(value = "SELECT coupons_id FROM companies_coupons where company_id = :companyID", nativeQuery = true)
-//    List<Coupon> findAllByCompanyId(int companyID);
+
 
 }

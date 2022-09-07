@@ -23,7 +23,5 @@ public abstract class ClientService {
     @Autowired
     protected TokenManager tokenManager;
 
-    public abstract UUID login(String email, String password) throws CouponSystemException;
-    public abstract void logout(UUID token);
-
+//    public abstract boolean login(String email, String password) throws CouponSystemException;
 }

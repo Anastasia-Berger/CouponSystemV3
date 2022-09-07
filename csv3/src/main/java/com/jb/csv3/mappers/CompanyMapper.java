@@ -2,10 +2,12 @@ package com.jb.csv3.mappers;
 
 import com.jb.csv3.beans.Company;
 import com.jb.csv3.dto.beansDto.CompanyDto;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class CompanyMapper implements  Mapper<Company, CompanyDto>{
 
     @Override

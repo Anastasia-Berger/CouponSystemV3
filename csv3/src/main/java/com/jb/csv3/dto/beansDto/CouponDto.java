@@ -1,14 +1,12 @@
 package com.jb.csv3.dto.beansDto;
 
 import com.jb.csv3.beans.Company;
-import com.jb.csv3.enums.Category;
+import com.jb.csv3.beans.enums.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
 import java.sql.Date;
 
 @Data

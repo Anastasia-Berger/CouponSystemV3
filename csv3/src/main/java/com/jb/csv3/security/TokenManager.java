@@ -1,6 +1,6 @@
 package com.jb.csv3.security;
 
-import com.jb.csv3.enums.ClientType;
+import com.jb.csv3.beans.enums.ClientType;
 import com.jb.csv3.exeptions.CouponSystemException;
 import com.jb.csv3.exeptions.ErrMsg;
 import org.springframework.stereotype.Service;
@@ -59,5 +59,4 @@ public class TokenManager {
 
         return true;
     }
-
 }

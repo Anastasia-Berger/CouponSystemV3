@@ -4,18 +4,15 @@ import com.jb.csv3.beans.Company;
 import com.jb.csv3.beans.Coupon;
 import com.jb.csv3.dto.beansDto.CompanyDto;
 import com.jb.csv3.dto.beansDto.CouponDto;
-import com.jb.csv3.enums.Category;
-import com.jb.csv3.enums.ClientType;
+import com.jb.csv3.beans.enums.Category;
 import com.jb.csv3.exeptions.CouponSystemException;
 import com.jb.csv3.exeptions.ErrMsg;
 import com.jb.csv3.mappers.CompanyMapper;
 import com.jb.csv3.mappers.CouponMapper;
-import com.jb.csv3.security.Information;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,25 +23,15 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
     private final CouponMapper couponMapper;
 
     @Override
-    public UUID login(String email, String password) throws CouponSystemException {
-//        if (!companyRepository.findByEmailAndPassword(email, password))
-//            throw new CouponSystemException(ErrMsg.INCORRECT_LOGIN);
-//        return false;
-
-        if(!companyRepository.existsByEmailAndPassword(email,password)){
-            throw new CouponSystemException(ErrMsg.EMAIL_OR_PASSWORD_INCORRECT);
+    public boolean login(String email, String password) throws CouponSystemException {
+        if (!companyRepository.existsByEmailAndPassword(email, password)) {
+            throw new CouponSystemException(ErrMsg.INCORRECT_LOGIN);
         }
-
-        Company company = companyRepository.findTop1ByEmail(email);
-        int companyID = company.getId();
-        ClientType clientType = ClientType.COMPANY;
-
-        Information information = new Information(companyID,email,clientType);
-        return tokenManager.addToken(information);
+        return true;
     }
 
     @Override
-    public void logout(UUID token) {
+    public void logout() {
 
     }
 

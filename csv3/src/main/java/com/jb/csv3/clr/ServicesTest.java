@@ -1,11 +1,12 @@
 package com.jb.csv3.clr;
 
-import com.jb.csv3.security.LoginManager;
+import com.jb.csv3.exeptions.CouponSystemException;
 import com.jb.csv3.repository.CompanyRepository;
 import com.jb.csv3.repository.CouponRepository;
 import com.jb.csv3.repository.CustomerRepository;
 import com.jb.csv3.service.*;
 import com.jb.csv3.utils.Titles;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -16,26 +17,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Order(3)
+@RequiredArgsConstructor
 public class ServicesTest implements CommandLineRunner {
 
-    @Autowired
-    private LoginManager loginManager;
-
-    @Autowired
     private ClientService clientService;
-    @Autowired
-    private AdminService adminService;
-    @Autowired
-    private CompanyServiceImpl companyServiceImpl;
-    @Autowired
-    private CustomerServiceImpl customerServiceImpl;
-
-    @Autowired
-    private CouponRepository couponRepository;
-    @Autowired
-    private CompanyRepository companyRepository;
-    @Autowired
-    private CustomerRepository customerRepository;
+    private final AdminService adminService;
+    private final CompanyService companyService;
+    private final CustomerService customerService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -43,16 +31,33 @@ public class ServicesTest implements CommandLineRunner {
         System.out.println(" ");
         System.out.println(Titles.SERVICE_TEST);
         System.out.println("   **********          ADMIN SERVICE TEST          ********** \n");
+        System.out.println("   **********          ADMIN CORRECT LOGIN          ********** \n");
 
-//        ClientService adminGoodLogin = null;
-//        try {
-//            adminGoodLogin = loginManager.login( "admin@admin.com", "admin", ClientType.ADMINISTRATOR,);
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
-//
-//        System.out.println("ADMIN IS ON THE BOARD : " + adminGoodLogin.getClass().getName());
-//
+        try {
+            System.out.println(adminService.login("admin@admin.com", "admin"));
+        } catch (CouponSystemException e) {
+            //e.printStackTrace();
+            System.out.println(e);
+        }
+
+        System.out.println("   **********          ADMIN BAD LOGIN          ********** \n");
+
+        System.out.println("   **********          Wrong email:          ********** ");
+        try {
+            System.out.println(adminService.login("wrong@admin.com", "admin"));
+        } catch (CouponSystemException e) {
+            //e.printStackTrace();
+            System.out.println("   >>>>>>>>>>          " + e + "          <<<<<<<<<<   ");
+        }
+        System.out.println("   **********          Wrong password:          ********** ");
+        try {
+            System.out.println(adminService.login("admin@admin.com", "wrong"));
+        } catch (CouponSystemException e) {
+            //e.printStackTrace();
+            System.out.println("   >>>>>>>>>>          " + e + "          <<<<<<<<<<   ");
+        }
+
+
 //        AdminServiceImpl adminLogin = (AdminServiceImpl) adminGoodLogin;
 //
 //        Company newCompanyByAdmin = Company.builder()
@@ -186,10 +191,65 @@ public class ServicesTest implements CommandLineRunner {
 //        System.out.println("GET CMPN DETAILS");
 //        TablePrinter.print(companyLogin.getCompanyDetails());
 //
-//        System.out.println("///////////////////////////////////////////////////////////////////////////////////////////////////");
-//        System.out.println("CUSTOMER SERVICE TEST");
-//        System.out.println(" ");
-//        System.out.println("Customer Login with correct details:");
+        System.out.println("///////////////////////////////////////////////////////////////////////////////////////////////////");
+
+        System.out.println("   **********          COMPANY SERVICE TEST          ********** \n");
+        System.out.println("   **********          COMPANY CORRECT LOGIN          ********** \n");
+
+        try {
+            System.out.println(adminService.login("shookit@mail.com", "company1234"));
+        } catch (CouponSystemException e) {
+            //e.printStackTrace();
+            System.out.println(e);
+        }
+
+        System.out.println("   **********          COMPANY BAD LOGIN          ********** \n");
+
+        System.out.println("   **********          Wrong email:          ********** ");
+        try {
+            System.out.println(adminService.login("alexa@mail.com", "company1234"));
+        } catch (CouponSystemException e) {
+            //e.printStackTrace();
+            System.out.println("   >>>>>>>>>>          " + e + "          <<<<<<<<<<   ");
+        }
+        System.out.println("   **********          Wrong password:          ********** ");
+        try {
+            System.out.println(adminService.login("shookit@mail.com", "wrong"));
+        } catch (CouponSystemException e) {
+            //e.printStackTrace();
+            System.out.println("   >>>>>>>>>>          " + e + "          <<<<<<<<<<   ");
+        }
+
+        System.out.println("///////////////////////////////////////////////////////////////////////////////////////////////////");
+
+        System.out.println("   **********          CUSTOMER SERVICE TEST          ********** \n");
+        System.out.println("   **********          CUSTOMER CORRECT LOGIN          ********** \n");
+
+        try {
+            System.out.println(adminService.login("alex@mail.com", "customer1234"));
+        } catch (CouponSystemException e) {
+            //e.printStackTrace();
+            System.out.println(e);
+        }
+
+        System.out.println("   **********          CUSTOMER BAD LOGIN          ********** \n");
+
+        System.out.println("   **********          Wrong email:          ********** ");
+        try {
+            System.out.println(adminService.login("alexa@mail.com", "customer1234"));
+        } catch (CouponSystemException e) {
+            //e.printStackTrace();
+            System.out.println("   >>>>>>>>>>          " + e + "          <<<<<<<<<<   ");
+        }
+        System.out.println("   **********          Wrong password:          ********** ");
+        try {
+            System.out.println(adminService.login("alex@mail.com", "wrong"));
+        } catch (CouponSystemException e) {
+            //e.printStackTrace();
+            System.out.println("   >>>>>>>>>>          " + e + "          <<<<<<<<<<   ");
+        }
+
+
 //
 //        ClientService cstmrGoodLogin = null;
 //        try {

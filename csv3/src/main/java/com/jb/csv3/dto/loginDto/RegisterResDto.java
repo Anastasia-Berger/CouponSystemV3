@@ -1,6 +1,6 @@
 package com.jb.csv3.dto.loginDto;
 
-import com.jb.csv3.enums.ClientType;
+import com.jb.csv3.beans.enums.ClientType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

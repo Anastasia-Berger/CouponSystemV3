@@ -2,22 +2,28 @@ package com.jb.csv3.service;
 
 import com.jb.csv3.dto.beansDto.CompanyDto;
 import com.jb.csv3.dto.beansDto.CouponDto;
-import com.jb.csv3.enums.Category;
+import com.jb.csv3.beans.enums.Category;
 import com.jb.csv3.exeptions.CouponSystemException;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface CompanyService {
-    UUID login(String email, String password) throws CouponSystemException;
+    boolean login(String email, String password) throws CouponSystemException;
+
     void logout();
 
     CouponDto addCoupon(int companyID, CouponDto CouponDto) throws CouponSystemException;
+
     CouponDto updateCoupon(int companyID, CouponDto CouponDto) throws CouponSystemException;
+
     void deleteCoupon(int companyID, int couponID) throws CouponSystemException;
+
     List<CouponDto> getCompanyCoupons(int companyID);
+
     List<CouponDto> getCompanyCoupons(int companyID, Category category);
+
     List<CouponDto> getCompanyCoupons(int companyID, double maxPrice);
+
     CompanyDto getCompanyDetails(int companyID);
 
     int count();

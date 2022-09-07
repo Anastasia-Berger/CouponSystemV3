@@ -1,6 +1,6 @@
 package com.jb.csv3.beans;
 
-import com.jb.csv3.enums.ClientType;
+import com.jb.csv3.beans.enums.ClientType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Builder
-public class Customer {
+public class Customer extends Base {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +33,15 @@ public class Customer {
 
     private String image;
 
-    public Customer(String email, String password, ClientType customer) {
+    public Customer(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 
+    public Customer(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
     }
 }

@@ -7,24 +7,37 @@ import com.jb.csv3.exeptions.CouponSystemException;
 
 import java.util.List;
 
-public interface AdminService{
+public interface AdminService {
 
     boolean login(String email, String password) throws CouponSystemException;
+
     void logout();
 
     CompanyDto addCompany(CompanyDto companyDto) throws CouponSystemException;
+
     CompanyDto updateCompany(int companyID, CompanyDto CompanyDto) throws CouponSystemException;
+
     void deleteCompany(int companyID) throws CouponSystemException;
+
     List<CompanyDto> getAllCompanies();
+
     CompanyDto getOneCompany(int companyID) throws CouponSystemException;
 
     CustomerDto addCustomer(CustomerDto customerDto) throws CouponSystemException;
+
     CustomerDto updateCustomer(int customerID, CustomerDto customerDto) throws CouponSystemException;
+
     void deleteCustomer(int customerID) throws CouponSystemException;
+
     List<CustomerDto> getAllCustomers();
+
     CustomerDto getOneCustomer(int customerID);
 
     List<CouponDto> getAllCoupons();
-    int count();
 
+    int countCompanies();
+
+    int countCustomers();
+
+    int countCoupons();
 }

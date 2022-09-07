@@ -1,4 +1,4 @@
-package com.jb.csv3.enums;
+package com.jb.csv3.beans.enums;
 
 public enum ClientType {
 

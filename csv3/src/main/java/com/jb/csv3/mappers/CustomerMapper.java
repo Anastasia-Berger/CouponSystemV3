@@ -2,10 +2,13 @@ package com.jb.csv3.mappers;
 
 import com.jb.csv3.beans.Customer;
 import com.jb.csv3.dto.beansDto.CustomerDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class CustomerMapper implements Mapper<Customer, CustomerDto> {
     @Override
     public Customer toDAO(CustomerDto customerDto) {

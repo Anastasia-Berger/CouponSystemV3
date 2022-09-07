@@ -3,10 +3,10 @@ package com.jb.csv3.controllers;
 import com.jb.csv3.dto.loginDto.LoginReqDto;
 import com.jb.csv3.dto.loginDto.LoginResDto;
 import com.jb.csv3.dto.loginDto.RegisterReqDto;
-import com.jb.csv3.enums.ClientType;
+import com.jb.csv3.beans.enums.ClientType;
 import com.jb.csv3.exeptions.CouponSystemException;
+import com.jb.csv3.security.LoginManager;
 import com.jb.csv3.security.TokenManager;
-import com.jb.csv3.service.ClientService;
 import com.jb.csv3.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,19 +17,21 @@ import java.util.UUID;
 @RestController
 @RequestMapping("api/")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class LoginController {
 
-    private  final ClientService clientService;
     private final CustomerService customerService;
+    private final LoginManager loginManager;
     private final TokenManager tokenManager;
 
     @PostMapping("register")
     @ResponseStatus(HttpStatus.CREATED)
     public void register(@RequestBody RegisterReqDto registerReqDto) throws CouponSystemException {
+        String firstName = registerReqDto.getEmail();
+        String lastName = registerReqDto.getPassword();
         String email = registerReqDto.getEmail();
         String password = registerReqDto.getPassword();
-        customerService.register(email, password);
+        customerService.register(firstName, lastName, email, password);
     }
 
     @PostMapping("login")
@@ -37,14 +39,12 @@ public class LoginController {
     public LoginResDto login(@RequestBody LoginReqDto loginReqDto) throws CouponSystemException {
         String email = loginReqDto.getEmail();
         String password = loginReqDto.getPassword();
-        UUID uuid = clientService.login(email, password);
-        ClientType clientType = tokenManager.getClientType(uuid);
-        return new LoginResDto(email,uuid,clientType);
-    }
+        ClientType type = loginReqDto.getClientType();
 
-    @PutMapping("logout/{uuid}")
-    public void logout(@RequestParam UUID token) {
-        clientService.logOut(token);
+        UUID uuid = loginManager.login(email, password, type);
+//        ClientType clientType = tokenManager.getClientType(uuid);
+
+        return new LoginResDto(email, uuid, type);
     }
 
 }

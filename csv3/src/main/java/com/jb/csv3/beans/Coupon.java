@@ -1,8 +1,7 @@
 package com.jb.csv3.beans;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.jb.csv3.enums.Category;
+import com.jb.csv3.beans.enums.Category;
 import com.jb.csv3.exeptions.CouponSystemException;
 import com.jb.csv3.exeptions.ErrMsg;
 import lombok.*;
@@ -17,7 +16,7 @@ import java.sql.Date;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Data
 @Builder
-public class Coupon {
+public class Coupon extends Base{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

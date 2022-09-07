@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Data
 @Builder
-public class Company {
+public class Company extends Base{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

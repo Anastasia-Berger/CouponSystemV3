@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @Primary
@@ -27,16 +26,14 @@ public class AdminServiceImpl extends ClientService implements AdminService {
     private final CouponMapper couponMapper;
 
     @Override
-    public UUID login(String email, String password) throws CouponSystemException {
-        if(!email.equals("admin@admin.com") && password.equals("admin"))
-            throw new CouponSystemException(ErrMsg.INCORRECT_LOGIN);
-
-        return tokenManager.addToken(information);
+    public boolean login(String email, String password) throws CouponSystemException {
+        if (!email.equals("admin@admin.com") && password.equals("admin")){
+            throw new CouponSystemException(ErrMsg.INCORRECT_LOGIN);}
+        return true;
     }
 
     @Override
-    public void logout(UUID token) {
-
+    public void logout() {
     }
 
     @Override
@@ -135,7 +132,17 @@ public class AdminServiceImpl extends ClientService implements AdminService {
     }
 
     @Override
-    public int count() {
+    public int countCompanies() {
+        return (int) companyRepository.count();
+    }
+
+    @Override
+    public int countCustomers() {
+        return (int) customerRepository.count();
+    }
+
+    @Override
+    public int countCoupons() {
         return (int) couponRepository.count();
     }
 
