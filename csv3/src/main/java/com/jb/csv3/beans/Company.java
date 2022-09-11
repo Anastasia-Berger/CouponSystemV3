@@ -1,5 +1,6 @@
 package com.jb.csv3.beans;
 
+import com.jb.csv3.beans.enums.ClientType;
 import com.jb.csv3.exeptions.CouponSystemException;
 import com.jb.csv3.exeptions.ErrMsg;
 import lombok.*;
@@ -11,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "companies")
 @NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @Data
 @Builder
 public class Company extends Base{

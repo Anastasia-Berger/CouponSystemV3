@@ -1,6 +1,8 @@
 package com.jb.csv3.beans;
 
 import com.jb.csv3.beans.enums.ClientType;
+import com.jb.csv3.exeptions.CouponSystemException;
+import com.jb.csv3.exeptions.ErrMsg;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,15 +35,10 @@ public class Customer extends Base {
 
     private String image;
 
-    public Customer(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
-
-    public Customer(String firstName, String lastName, String email, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
+    public void setId(int id) throws CouponSystemException {
+        if (this.id == 0) {
+            this.id = id;
+        }
+        throw new CouponSystemException(ErrMsg.ILLEGAL_ACTION_EXCEPTION);
     }
 }

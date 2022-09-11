@@ -30,8 +30,14 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
             throw new CouponSystemException(ErrMsg.EMAIL_ALREADY_EXIST);
         }
 
-        Customer customer = new Customer(firstName, lastName, email, password);
-        customerRepository.save(customer);
+        Customer customer = Customer.builder()
+                .firstName(firstName)
+                .lastName(lastName)
+                .email(email)
+                .password(password)
+                .build();
+
+        customerRepository.saveAndFlush(customer);
     }
 
     @Override

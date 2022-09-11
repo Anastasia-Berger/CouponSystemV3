@@ -27,8 +27,9 @@ public class AdminServiceImpl extends ClientService implements AdminService {
 
     @Override
     public boolean login(String email, String password) throws CouponSystemException {
-        if (!email.equals("admin@admin.com") && password.equals("admin")){
-            throw new CouponSystemException(ErrMsg.INCORRECT_LOGIN);}
+        if (!email.equals("admin@admin.com") && !password.equals("admin")){
+            throw new CouponSystemException(ErrMsg.INCORRECT_LOGIN);
+        }
         return true;
     }
 

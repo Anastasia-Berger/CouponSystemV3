@@ -17,12 +17,12 @@ import java.util.UUID;
 @RestController
 @RequestMapping("api/")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "*" /*, allowedHeaders = "*"*/)
 public class LoginController {
 
     private final CustomerService customerService;
     private final LoginManager loginManager;
-    private final TokenManager tokenManager;
+//    private final TokenManager tokenManager;
 
     @PostMapping("register")
     @ResponseStatus(HttpStatus.CREATED)

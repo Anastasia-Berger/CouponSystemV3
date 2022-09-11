@@ -13,7 +13,7 @@ import java.sql.Date;
 @Entity
 @Table(name = "coupons")
 @NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @Data
 @Builder
 public class Coupon extends Base{
@@ -55,5 +55,4 @@ public class Coupon extends Base{
         }
         throw new CouponSystemException(ErrMsg.ILLEGAL_ACTION_EXCEPTION);
     }
-
 }

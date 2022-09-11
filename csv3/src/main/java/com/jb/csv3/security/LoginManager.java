@@ -29,7 +29,7 @@ public class LoginManager {
 
             case ADMINISTRATOR:
                 if (adminService.login(email, password)) {//If wrong, exception thrown
-                    Information information = new Information(email, clientType);
+                    Information information = new Information(email, ClientType.ADMINISTRATOR);
                     UUID token = tokenManager.addToken(information);
                     return token;
                 }
@@ -37,7 +37,7 @@ public class LoginManager {
 
             case COMPANY:
                 if (companyService.login(email, password)) {//If wrong, exception thrown
-                    Information information = new Information(email, clientType);
+                    Information information = new Information(email, ClientType.COMPANY);
                     UUID token = tokenManager.addToken(information);
                     return token;
                 }
@@ -45,7 +45,7 @@ public class LoginManager {
 
             case CUSTOMER:
                 if (customerService.login(email, password)) {//If wrong, exception thrown;
-                    Information information = new Information(email, clientType);
+                    Information information = new Information(email, ClientType.CUSTOMER);
                     UUID token = tokenManager.addToken(information);
                     return token;
                 }

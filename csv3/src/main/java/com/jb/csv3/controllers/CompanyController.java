@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("companies")
+@RequestMapping("api/companies/")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class CompanyController{
