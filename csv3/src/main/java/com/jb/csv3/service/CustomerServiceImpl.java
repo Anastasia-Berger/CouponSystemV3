@@ -60,6 +60,11 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
     }
 
     @Override
+    public List<CouponDto> getAllCoupons(){
+        return couponMapper.toDtoList(couponRepository.findAll());
+    }
+
+    @Override
     public CouponDto purchaseCoupon(int customerID, CouponDto couponDto) throws CouponSystemException {
         Coupon coupon = couponMapper.toDAO(couponDto);
 

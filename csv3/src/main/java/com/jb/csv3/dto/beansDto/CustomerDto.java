@@ -24,7 +24,7 @@ public class CustomerDto {
     private String email;
     private String password;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+//    @ManyToMany(cascade = CascadeType.ALL)
     private List<Coupon> coupons = new ArrayList<>();
 
     private String image;

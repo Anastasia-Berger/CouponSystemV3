@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,6 +42,12 @@ public class CustomerController {
 //        return new LoginResDto(email,uuid,clientType);
 //    }
 
+    @GetMapping("coupons")
+    public List<CouponDto> getAllCoupons(@RequestHeader("Authorization") UUID token) throws CouponSystemException {
+        tokenManager.getUserID(token);
+        return customerService.getAllCoupons();
+    }
+
     @PostMapping("purchase")
     @ResponseStatus(HttpStatus.CREATED)
     CouponDto purchaseCoupon(@RequestBody CouponDto couponDto, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
@@ -48,10 +55,10 @@ public class CustomerController {
         return customerService.purchaseCoupon(userId, couponDto);
     }
 
-    @GetMapping("coupons")
+    @GetMapping("coupons/purchased")
     public List<CouponDto> getCustomerCoupons(@RequestHeader("Authorization") UUID token) throws CouponSystemException {
-        int userId = tokenManager.getUserID(token);
-        return customerService.getCustomerCoupons(userId);
+        int customerID = tokenManager.getUserID(token);
+        return customerService.getCustomerCoupons(customerID);
     }
 
     @GetMapping("coupons/{category}")

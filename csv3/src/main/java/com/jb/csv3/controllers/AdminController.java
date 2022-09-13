@@ -41,7 +41,7 @@ public class AdminController {
         return adminService.addCompany(companyDto);
     }
 
-    @PutMapping("{companyID}")
+    @PutMapping("companies/{companyID}")
     public CompanyDto updateCompany(@PathVariable int companyID, @RequestBody CompanyDto companyDto, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
         tokenManager.isAdmin(token);
         return adminService.updateCompany(companyID, companyDto);

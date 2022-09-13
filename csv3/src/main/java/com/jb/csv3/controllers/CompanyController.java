@@ -47,7 +47,7 @@ public class CompanyController{
         return companyService.updateCoupon(companyID, couponDto);
     }
 
-    @DeleteMapping("{coupons/{couponID}")
+    @DeleteMapping("coupons/{couponID}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCoupon(@PathVariable int couponID, @RequestHeader("Authorization") UUID token) throws CouponSystemException{
         int companyID = tokenManager.getUserID(token);
