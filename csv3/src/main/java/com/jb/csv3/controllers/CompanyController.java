@@ -18,10 +18,9 @@ import java.util.UUID;
 @RequestMapping("api/companies/")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
-public class CompanyController{
+public class CompanyController {
 
     private final CompanyService companyService;
-    private final LoginManager loginManager;
     private final TokenManager tokenManager;
 
 //    @PostMapping("login")
@@ -34,22 +33,29 @@ public class CompanyController{
 //        return new LoginResDto(email,uuid,clientType);
 //    }
 
-    @PostMapping("coupons")
+//    @PutMapping("company/{companyID}")
+//    public CompanyDto updateCompany(@PathVariable int companyID, @RequestBody CompanyDto companyDto, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
+//        tokenManager.isAdmin(token);
+//        return companyService.updateCompany(companyID, companyDto);
+//    }
+
+    @PostMapping/*("coupons")*/
     @ResponseStatus(HttpStatus.CREATED)
-    public CouponDto addCoupon(@RequestBody CouponDto couponDto, @RequestHeader("Authorization") UUID token) throws CouponSystemException{
+    public CouponDto addCoupon(@RequestBody CouponDto couponDto, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
         int companyID = tokenManager.getUserID(token);
         return companyService.addCoupon(companyID, couponDto);
     }
 
-    @PutMapping("coupons")
-    public CouponDto updateCoupon(@RequestBody CouponDto couponDto, @RequestHeader("Authorization") UUID token) throws CouponSystemException{
+    // check if this working with company id
+    @PutMapping("coupons/{couponId}")
+    public CouponDto updateCoupon(@PathVariable int couponId, @RequestBody CouponDto couponDto, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
         int companyID = tokenManager.getUserID(token);
-        return companyService.updateCoupon(companyID, couponDto);
+        return companyService.updateCoupon(companyID, couponId, couponDto);
     }
 
     @DeleteMapping("coupons/{couponID}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCoupon(@PathVariable int couponID, @RequestHeader("Authorization") UUID token) throws CouponSystemException{
+    public void deleteCoupon(@PathVariable int couponID, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
         int companyID = tokenManager.getUserID(token);
         companyService.deleteCoupon(companyID, couponID);
     }
@@ -77,7 +83,8 @@ public class CompanyController{
         int companyID = tokenManager.getUserID(token);
         return companyService.getCompanyDetails(companyID);
     }
-//
+
+//    IN ADMIN CONTROLLER
 //    @GetMapping("count")
 //    public int count(@RequestHeader("Authorization") UUID token) {
 //        return companyService.count();

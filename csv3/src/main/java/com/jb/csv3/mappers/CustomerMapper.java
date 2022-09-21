@@ -10,9 +10,11 @@ import java.util.stream.Collectors;
 
 @Component
 public class CustomerMapper implements Mapper<Customer, CustomerDto> {
+
     @Override
     public Customer toDAO(CustomerDto customerDto) {
         return Customer.builder()
+                .id(customerDto.getId())
                 .firstName(customerDto.getFirstName())
                 .lastName(customerDto.getLastName())
                 .email(customerDto.getEmail())
@@ -24,6 +26,7 @@ public class CustomerMapper implements Mapper<Customer, CustomerDto> {
     @Override
     public CustomerDto toDTO(Customer customer) {
         return CustomerDto.builder()
+                .id(customer.getId())
                 .firstName(customer.getFirstName())
                 .lastName(customer.getLastName())
                 .email(customer.getEmail())

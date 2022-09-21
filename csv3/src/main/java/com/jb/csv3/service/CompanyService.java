@@ -12,9 +12,11 @@ public interface CompanyService {
 
     void logout();
 
+//    public CompanyDto updateCompany(int companyID, CompanyDto companyDto) throws CouponSystemException;
+
     CouponDto addCoupon(int companyID, CouponDto CouponDto) throws CouponSystemException;
 
-    CouponDto updateCoupon(int companyID, CouponDto CouponDto) throws CouponSystemException;
+    CouponDto updateCoupon(int companyID, int couponId, CouponDto CouponDto) throws CouponSystemException;
 
     void deleteCoupon(int companyID, int couponID) throws CouponSystemException;
 

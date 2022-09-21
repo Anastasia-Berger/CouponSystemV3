@@ -17,6 +17,7 @@ public class CouponMapper implements Mapper<Coupon, CouponDto> {
     @Override
     public Coupon toDAO(CouponDto couponDto) {
         return Coupon.builder()
+                .id(couponDto.getId())
                 .company(couponDto.getCompany())
                 .category(couponDto.getCategory())
                 .title(couponDto.getTitle())
@@ -32,6 +33,7 @@ public class CouponMapper implements Mapper<Coupon, CouponDto> {
     @Override
     public CouponDto toDTO(Coupon coupon) {
         return CouponDto.builder()
+                .id(coupon.getId())
                 .company(coupon.getCompany())
                 .category(coupon.getCategory())
                 .title(coupon.getTitle())

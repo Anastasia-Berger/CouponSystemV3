@@ -49,10 +49,10 @@ public class Coupon extends Base{
     private double price;
     private String image;
 
-    public void setId(int id) throws CouponSystemException {
-        if (this.id == 0) {
-            this.id = id;
-        }
-        throw new CouponSystemException(ErrMsg.ILLEGAL_ACTION_EXCEPTION);
-    }
+//    public void setId(int id) throws CouponSystemException {
+//        if (this.id == 0) {
+//            this.id = id;
+//        }
+//        throw new CouponSystemException(ErrMsg.ILLEGAL_ACTION_EXCEPTION);
+//    }
 }

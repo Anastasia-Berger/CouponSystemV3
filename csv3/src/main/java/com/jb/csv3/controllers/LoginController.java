@@ -27,8 +27,8 @@ public class LoginController {
     @PostMapping("register")
     @ResponseStatus(HttpStatus.CREATED)
     public void register(@RequestBody RegisterReqDto registerReqDto) throws CouponSystemException {
-        String firstName = registerReqDto.getEmail();
-        String lastName = registerReqDto.getPassword();
+        String firstName = registerReqDto.getFirstName();
+        String lastName = registerReqDto.getLastName();
         String email = registerReqDto.getEmail();
         String password = registerReqDto.getPassword();
         customerService.register(firstName, lastName, email, password);

@@ -13,6 +13,7 @@ public class CompanyMapper implements  Mapper<Company, CompanyDto>{
     @Override
     public Company toDAO(CompanyDto companyDto) {
         return Company.builder()
+                .id(companyDto.getId())
                 .name(companyDto.getName())
                 .email(companyDto.getEmail())
                 .password(companyDto.getPassword())
@@ -24,6 +25,7 @@ public class CompanyMapper implements  Mapper<Company, CompanyDto>{
     @Override
     public CompanyDto toDTO(Company company) {
         return CompanyDto.builder()
+                .id(company.getId())
                 .name(company.getName())
                 .email(company.getEmail())
                 .password(company.getPassword())

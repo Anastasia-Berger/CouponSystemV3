@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.sql.Date;
 
 @Data
@@ -17,7 +20,6 @@ public class CouponDto {
 
     private int id;
     private Company company;
-//    @Enumerated(EnumType.STRING)
     private Category category;
     private String title;
     private String description;

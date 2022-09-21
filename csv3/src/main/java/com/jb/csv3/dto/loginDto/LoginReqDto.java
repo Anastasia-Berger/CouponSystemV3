@@ -13,7 +13,7 @@ public class LoginReqDto {
 
     private String email;
     private String password;
-    @Enumerated(EnumType.STRING)
+//    @Enumerated(EnumType.STRING)
     private ClientType clientType;
 
 }

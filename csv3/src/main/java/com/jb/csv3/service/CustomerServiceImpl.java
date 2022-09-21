@@ -24,7 +24,7 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
     private final CouponMapper couponMapper;
 
     @Override
-    public void register(String firstName, String lastName,String email, String password) throws CouponSystemException {
+    public void register(String firstName, String lastName, String email, String password) throws CouponSystemException {
 
         if (customerRepository.existsByEmail(email)) {
             throw new CouponSystemException(ErrMsg.EMAIL_ALREADY_EXIST);
@@ -42,8 +42,9 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
 
     @Override
     public boolean login(String email, String password) throws CouponSystemException {
-        if (!customerRepository.existsByEmailAndPassword(email, password)){
-            throw new CouponSystemException(ErrMsg.INCORRECT_LOGIN);}
+        if (!customerRepository.existsByEmailAndPassword(email, password)) {
+            throw new CouponSystemException(ErrMsg.INCORRECT_LOGIN);
+        }
         return true;
 
 //        Customer customer = customerRepository.findTop1ByEmail(email);
@@ -60,7 +61,7 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
     }
 
     @Override
-    public List<CouponDto> getAllCoupons(){
+    public List<CouponDto> getAllCoupons() {
         return couponMapper.toDtoList(couponRepository.findAll());
     }
 
@@ -74,22 +75,22 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
         }
 
         // Check customer's stock of coupons
-        for (Coupon customerCoupon : customerRepository.findById(customerID).get().getCoupons()) {
-            if (customerCoupon.getId() == coupon.getId())
-                throw new CouponSystemException(ErrMsg.ALREADY_PURCHASED);
+        if (couponRepository.existsByCustomerIdAndCouponId(customerID, coupon.getId()) != 0) {
+            throw new CouponSystemException(ErrMsg.ALREADY_PURCHASED);
         }
 
-        coupon.setAmount(coupon.getAmount() - 1);
 
         Customer customerFromDB = customerRepository.findById(customerID).get();
-        customerFromDB.getCoupons().add(coupon);
 
+        List<Coupon> coupons = customerFromDB.getCoupons();
+        coupons.add(coupon);
+        // Updating current logged user by data from updated repository
+        customerFromDB.setCoupons(coupons);
         // Updating customer coupon list in repository
         customerRepository.saveAndFlush(customerFromDB);
 
-        // Updating current logged user by data from updated repository
-        customerRepository.findById(customerID).get().setCoupons(customerFromDB.getCoupons());
-
+        // Updating current
+        coupon.setAmount(coupon.getAmount() - 1);
         // Updating coupon amount in repository
         return couponMapper.toDTO(couponRepository.saveAndFlush(coupon));
     }
@@ -119,8 +120,13 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
     }
 
     @Override
-    public CustomerDto getCustomerDetails(int customerID) {
-        return customerMapper.toDTO(customerRepository.findById(customerID).get());
+    public CustomerDto getCustomerDetails(int customerID) throws CouponSystemException {
+        if (!customerRepository.existsById(customerID)){
+            throw new CouponSystemException(ErrMsg.ID_NOT_EXIST);
+        }
+
+        Customer customer = customerRepository.findById(customerID).get();
+        return customerMapper.toDTO(customer);
     }
 
     @Override

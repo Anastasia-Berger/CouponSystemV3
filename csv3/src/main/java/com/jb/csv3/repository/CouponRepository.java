@@ -4,6 +4,7 @@ import com.jb.csv3.beans.Coupon;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,4 +20,7 @@ public interface CouponRepository extends JpaRepository<Coupon, Integer> {
 
     List<Coupon> findByCompanyId(int companyID);
 //    List<Coupon> findByCustomerId(int customerID);
+
+    @Query(value = "select exists (SELECT * FROM customers_coupons WHERE `CUSTOMER_ID` = :customerId and `coupons_id` = :couponId) as res", nativeQuery = true)
+    int existsByCustomerIdAndCouponId(@Param("customerId") int customerId, @Param("couponId") int couponId);
 }

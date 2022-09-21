@@ -417,6 +417,7 @@ public class RepoTest implements CommandLineRunner {
 
         customerRepository.saveAllAndFlush(Arrays.asList(customer1, customer2, customer3, customer4));
         TablePrinter.print(customerRepository.findAll());
+        System.out.println(customerRepository.findById(4).get());
 
     }
 }

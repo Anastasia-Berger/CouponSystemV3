@@ -25,7 +25,7 @@ public interface CustomerService {
 
     List<CouponDto> getCustomerCoupons(int customerID, double maxPrice);
 
-    CustomerDto getCustomerDetails(int customerID);
+    CustomerDto getCustomerDetails(int customerID) throws CouponSystemException;
 
     int count();
 }

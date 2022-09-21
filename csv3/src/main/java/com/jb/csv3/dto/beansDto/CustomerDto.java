@@ -15,17 +15,12 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class CustomerDto {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
 
+    private int id;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
-
-//    @ManyToMany(cascade = CascadeType.ALL)
     private List<Coupon> coupons = new ArrayList<>();
-
     private String image;
 }

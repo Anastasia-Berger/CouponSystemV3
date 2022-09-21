@@ -35,9 +35,20 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
 
     }
 
+//    @Override
+//    public CompanyDto updateCompany(int companyID, CompanyDto companyDto) throws CouponSystemException {
+//
+//        Company company = companyMapper.toDAO(companyDto);
+//
+//        // Checking if the company is exists for update
+//        if (!companyRepository.existsById(companyID)) {
+//            throw new CouponSystemException(ErrMsg.ID_NOT_EXIST);
+//        }
+//        return companyMapper.toDTO(companyRepository.saveAndFlush(company));
+//    }
+
     @Override
     public CouponDto addCoupon(int companyID, CouponDto couponDto) throws CouponSystemException {
-        Coupon coupon = couponMapper.toDAO(couponDto);
 
         // Checks the unique title of the coupon
         List<Coupon> companyCoupons = companyRepository.findById(companyID).get().getCoupons();
@@ -46,6 +57,7 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
             throw new CouponSystemException(ErrMsg.DUPLICATE_COUPON_TITLE);
 
         // Associates coupon with the owner company
+        Coupon coupon = couponMapper.toDAO(couponDto);
         Company company = companyRepository.findById(companyID).get();
         coupon.setCompany(company);
 
@@ -57,13 +69,14 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
     }
 
     @Override
-    public CouponDto updateCoupon(int companyID, CouponDto couponDto) throws CouponSystemException {
-        Coupon coupon = couponMapper.toDAO(couponDto);
-
+    public CouponDto updateCoupon(int companyID, int couponId, CouponDto couponDto) throws CouponSystemException {
         // Checks if the coupon is in the repo
-        if (!couponRepository.existsById(coupon.getId())) {
+        if (!couponRepository.existsById(couponId)) {
             throw new CouponSystemException(ErrMsg.ID_NOT_EXIST);
         }
+
+        couponDto.setId(couponId);
+        Coupon coupon = couponMapper.toDAO(couponDto);
 
         // Checks if company is the owner of the coupon
         if (coupon.getCompany().getId() != companyID) {

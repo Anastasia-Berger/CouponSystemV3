@@ -33,6 +33,8 @@ public interface AdminService {
 
     CustomerDto getOneCustomer(int customerID);
 
+    List<CouponDto> getCustomerCoupons(int customerID);
+
     List<CouponDto> getAllCoupons();
 
     int countCompanies();

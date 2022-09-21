@@ -79,7 +79,7 @@ public class AdminController {
         return adminService.updateCustomer(customerID, customerDto);
     }
 
-    @DeleteMapping("{customerID}")
+    @DeleteMapping("customers/{customerID}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCustomer(@PathVariable int customerID, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
         tokenManager.isAdmin(token);
@@ -96,6 +96,12 @@ public class AdminController {
     public CustomerDto getOneCustomer(@PathVariable int customerID, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
         tokenManager.isAdmin(token);
         return adminService.getOneCustomer(customerID);
+    }
+
+    @GetMapping("customers/{customerID}/coupons")
+    public List<CouponDto> getCustomerCoupons(@PathVariable int customerID, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
+        tokenManager.isAdmin(token);
+        return adminService.getCustomerCoupons(customerID);
     }
 
     @GetMapping("coupons")
@@ -117,8 +123,8 @@ public class AdminController {
     }
 
     @GetMapping("coupons/count")
-    public int countCoupons(@RequestHeader("Authorization") UUID token) throws CouponSystemException {
-        tokenManager.isAdmin(token);
+    public int countCoupons(/*@RequestHeader("Authorization") UUID token*/) throws CouponSystemException {
+//        tokenManager.isAdmin(token);
         return adminService.countCoupons();
     }
 

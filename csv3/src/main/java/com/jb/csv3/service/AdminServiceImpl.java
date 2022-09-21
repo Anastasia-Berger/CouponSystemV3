@@ -27,7 +27,7 @@ public class AdminServiceImpl extends ClientService implements AdminService {
 
     @Override
     public boolean login(String email, String password) throws CouponSystemException {
-        if (!email.equals("admin@admin.com") && !password.equals("admin")){
+        if (!email.equals("admin@admin.com") && !password.equals("admin")) {
             throw new CouponSystemException(ErrMsg.INCORRECT_LOGIN);
         }
         return true;
@@ -56,13 +56,14 @@ public class AdminServiceImpl extends ClientService implements AdminService {
 
     @Override
     public CompanyDto updateCompany(int companyID, CompanyDto companyDto) throws CouponSystemException {
-
-        Company company = companyMapper.toDAO(companyDto);
-
-        // Checking if the company is exists for update
+        // Checking if company for update exists in repository
         if (!companyRepository.existsById(companyID)) {
             throw new CouponSystemException(ErrMsg.ID_NOT_EXIST);
         }
+
+        companyDto.setId(companyID);
+        Company company = companyMapper.toDAO(companyDto);
+
         return companyMapper.toDTO(companyRepository.saveAndFlush(company));
     }
 
@@ -99,12 +100,14 @@ public class AdminServiceImpl extends ClientService implements AdminService {
 
     @Override
     public CustomerDto updateCustomer(int customerID, CustomerDto customerDto) throws CouponSystemException {
-        Customer customer = customerMapper.toDAO(customerDto);
-
         // Checking if customer is exists
         if (!customerRepository.existsById(customerID)) {
             throw new CouponSystemException(ErrMsg.ID_NOT_EXIST);
         }
+
+        customerDto.setId(customerID);
+        Customer customer = customerMapper.toDAO(customerDto);
+
         return customerMapper.toDTO(customerRepository.saveAndFlush(customer));
     }
 
@@ -114,6 +117,7 @@ public class AdminServiceImpl extends ClientService implements AdminService {
         if (!customerRepository.existsById(customerID)) {
             throw new CouponSystemException(ErrMsg.ID_NOT_EXIST);
         }
+
         customerRepository.deleteById(customerID);
     }
 
@@ -125,6 +129,11 @@ public class AdminServiceImpl extends ClientService implements AdminService {
     @Override
     public CustomerDto getOneCustomer(int customerID) {
         return customerMapper.toDTO(customerRepository.findById(customerID).get());
+    }
+
+    @Override
+    public List<CouponDto> getCustomerCoupons(int customerID) {
+        return couponMapper.toDtoList(customerRepository.findById(customerID).get().getCoupons());
     }
 
     @Override

@@ -50,7 +50,7 @@ public class CustomerController {
 
     @PostMapping("purchase")
     @ResponseStatus(HttpStatus.CREATED)
-    CouponDto purchaseCoupon(@RequestBody CouponDto couponDto, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
+    public CouponDto purchaseCoupon(@RequestBody CouponDto couponDto, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
         int userId = tokenManager.getUserID(token);
         return customerService.purchaseCoupon(userId, couponDto);
     }

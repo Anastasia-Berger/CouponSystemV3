@@ -1,8 +1,10 @@
 package com.jb.csv3.security;
 
+import com.jb.csv3.beans.Customer;
 import com.jb.csv3.beans.enums.ClientType;
 import com.jb.csv3.exeptions.CouponSystemException;
 import com.jb.csv3.exeptions.ErrMsg;
+import com.jb.csv3.repository.CustomerRepository;
 import com.jb.csv3.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class LoginManager {
+public class LoginManager extends ClientService{
 
     private final AdminServiceImpl adminService;
     private final CompanyServiceImpl companyService;
@@ -37,7 +39,8 @@ public class LoginManager {
 
             case COMPANY:
                 if (companyService.login(email, password)) {//If wrong, exception thrown
-                    Information information = new Information(email, ClientType.COMPANY);
+                    int companyID = companyRepository.findTop1ByEmail(email).getId();
+                    Information information = new Information(companyID, email, clientType);
                     UUID token = tokenManager.addToken(information);
                     return token;
                 }
@@ -45,7 +48,8 @@ public class LoginManager {
 
             case CUSTOMER:
                 if (customerService.login(email, password)) {//If wrong, exception thrown;
-                    Information information = new Information(email, ClientType.CUSTOMER);
+                    int customerID = customerRepository.findTop1ByEmail(email).getId();
+                    Information information = new Information(customerID, email, clientType);
                     UUID token = tokenManager.addToken(information);
                     return token;
                 }
@@ -65,7 +69,7 @@ public class LoginManager {
                 // The container (ctx - objects tree) gets its information on what object to instantiate, configure or manage
                 // by reading configuration metadata (@Annotations) we defined for the application
 
-                AdminService adminService =  ctx.getBean(AdminService.class);
+                AdminService adminService = ctx.getBean(AdminService.class);
                 if (adminService.login(email, password))
                     return (ClientService) adminService;
                 break;
