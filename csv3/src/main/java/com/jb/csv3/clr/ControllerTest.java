@@ -58,16 +58,16 @@ public class ControllerTest implements CommandLineRunner {
 //        System.out.println("adminController.getOneCompany(1, admin)   >>>   " + adminController.getOneCompany(1, admin));
 
 
-        System.out.println("   **********          CUSTOMER UUID LOGIN          ********** \n");
-        UUID customer = loginManager.login("adam@mail.com", "customer1234", ClientType.CUSTOMER);
-        System.out.println("CUSTOMER TOKEN:   >>>   " + customer.toString());
-
-        CouponDto ctb = couponMapper.toDTO(couponRepository.findById(2).get());
-        System.out.println("customerController.purchaseCoupon(ctb, customer)   >>>   "
-                        + customerController.purchaseCoupon(ctb, customer));
-
-        System.out.println("customerController.getCustomerDetails(customer)   >>>   "
-                + customerController.getCustomerDetails(customer));
+//        System.out.println("   **********          CUSTOMER UUID LOGIN          ********** \n");
+//        UUID customer = loginManager.login("adam@mail.com", "customer1234", ClientType.CUSTOMER);
+//        System.out.println("CUSTOMER TOKEN:   >>>   " + customer.toString());
+//
+//        CouponDto ctb = couponMapper.toDTO(couponRepository.findById(2).get());
+//        System.out.println("customerController.purchaseCoupon(ctb, customer)   >>>   "
+//                        + customerController.purchaseCoupon(ctb, customer));
+//
+//        System.out.println("customerController.getCustomerDetails(customer)   >>>   "
+//                + customerController.getCustomerDetails(customer));
 
 //        System.out.println("customerService.getCustomerDetails(4)   >>>   "
 //                + customerService.getCustomerDetails(4));
