@@ -25,6 +25,8 @@ public class LoginManager extends ClientService{
     @Autowired
     private ApplicationContext ctx;
 
+//    FACTORY METHOD
+
     public UUID login(String email, String password, ClientType clientType) throws CouponSystemException {
 
         switch (clientType) {

@@ -15,11 +15,16 @@ public interface CouponRepository extends JpaRepository<Coupon, Integer> {
     boolean existsByTitle(String couponTitle);
 
     @Modifying
-    @Query(value = "DELETE FROM csv3.customers_coupons WHERE coupons_id= :couponID", nativeQuery = true)
+    @Query(value = "DELETE FROM customers_coupons WHERE coupons_id= :couponID", nativeQuery = true)
     void deleteCouponPurchaseHistory(int couponID);
 
     List<Coupon> findByCompanyId(int companyID);
-//    List<Coupon> findByCustomerId(int customerID);
+
+//    @Query(value = "SELECT * FROM customers_coupons WHERE `CUSTOMER_ID` = :customerId", nativeQuery = true)
+//    List<Coupon> findByCustomerId(@Param("customerId") int customerId);
+
+    @Override
+    List<Coupon> findAll();
 
     @Query(value = "select exists (SELECT * FROM customers_coupons WHERE `CUSTOMER_ID` = :customerId and `coupons_id` = :couponId) as res", nativeQuery = true)
     int existsByCustomerIdAndCouponId(@Param("customerId") int customerId, @Param("couponId") int couponId);

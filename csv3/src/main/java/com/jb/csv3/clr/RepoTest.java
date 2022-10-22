@@ -18,6 +18,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @Component
 @Order(2)
@@ -392,6 +393,7 @@ public class RepoTest implements CommandLineRunner {
                 .lastName("Berger")
                 .email("alex@mail.com")
                 .password("customer1234")
+//                .coupons(Arrays.asList(c8, c9, c3))
                 .build();
 
         Customer customer2 = Customer.builder()
@@ -413,11 +415,13 @@ public class RepoTest implements CommandLineRunner {
                 .lastName("Berger")
                 .email("adam@mail.com")
                 .password("customer1234")
+//                .coupons(Arrays.asList(c1, c2, c3))
                 .build();
 
         customerRepository.saveAllAndFlush(Arrays.asList(customer1, customer2, customer3, customer4));
         TablePrinter.print(customerRepository.findAll());
-        System.out.println(customerRepository.findById(4).get());
+
+//        System.out.println("   **********          CUSTOMERS SET COUPONS          ********** \n");
 
     }
 }

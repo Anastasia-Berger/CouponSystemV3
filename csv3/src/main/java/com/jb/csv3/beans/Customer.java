@@ -30,7 +30,8 @@ public class Customer extends Base {
     @Column(nullable = false)
     private String password;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
+    @JoinTable(name = "customers_coupons")
     private List<Coupon> coupons = new ArrayList<>();
 
     private String image;

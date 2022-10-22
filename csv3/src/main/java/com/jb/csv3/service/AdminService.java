@@ -9,9 +9,13 @@ import java.util.List;
 
 public interface AdminService {
 
+    // Authorization
+
     boolean login(String email, String password) throws CouponSystemException;
 
     void logout();
+
+    // Companies
 
     CompanyDto addCompany(CompanyDto companyDto) throws CouponSystemException;
 
@@ -22,6 +26,12 @@ public interface AdminService {
     List<CompanyDto> getAllCompanies();
 
     CompanyDto getOneCompany(int companyID) throws CouponSystemException;
+
+    List<CouponDto> getCompanyCoupons(int companyID);
+
+    int countCompanies();
+
+    // Customers
 
     CustomerDto addCustomer(CustomerDto customerDto) throws CouponSystemException;
 
@@ -35,11 +45,11 @@ public interface AdminService {
 
     List<CouponDto> getCustomerCoupons(int customerID);
 
-    List<CouponDto> getAllCoupons();
-
-    int countCompanies();
-
     int countCustomers();
+
+    // All Coupons
+
+    List<CouponDto> getAllCoupons();
 
     int countCoupons();
 }

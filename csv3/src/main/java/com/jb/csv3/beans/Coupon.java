@@ -8,7 +8,9 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "coupons")
@@ -28,6 +30,9 @@ public class Coupon extends Base{
 
 //    @Column(name = "company_id", insertable = false)
 //    private int companyId;
+
+//    @Column(name = "customer_id")
+//    private int customerId;
 
     @Enumerated(EnumType.STRING)
     private Category category;
@@ -49,10 +54,4 @@ public class Coupon extends Base{
     private double price;
     private String image;
 
-//    public void setId(int id) throws CouponSystemException {
-//        if (this.id == 0) {
-//            this.id = id;
-//        }
-//        throw new CouponSystemException(ErrMsg.ILLEGAL_ACTION_EXCEPTION);
-//    }
 }

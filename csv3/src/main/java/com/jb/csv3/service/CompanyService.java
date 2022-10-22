@@ -14,7 +14,7 @@ public interface CompanyService {
 
 //    public CompanyDto updateCompany(int companyID, CompanyDto companyDto) throws CouponSystemException;
 
-    CouponDto addCoupon(int companyID, CouponDto CouponDto) throws CouponSystemException;
+    CouponDto addCoupon(int companyID, CouponDto couponDto) throws CouponSystemException;
 
     CouponDto updateCoupon(int companyID, int couponId, CouponDto CouponDto) throws CouponSystemException;
 

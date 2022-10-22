@@ -74,7 +74,10 @@ public class AdminController {
     }
 
     @PutMapping("customers/{customerID}")
-    public CustomerDto updateCustomer(@PathVariable int customerID, @RequestBody CustomerDto customerDto, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
+    public CustomerDto updateCustomer(
+            @RequestBody CustomerDto customerDto,
+            @PathVariable int customerID,
+            @RequestHeader("Authorization") UUID token) throws CouponSystemException {
         tokenManager.isAdmin(token);
         return adminService.updateCustomer(customerID, customerDto);
     }
@@ -128,17 +131,17 @@ public class AdminController {
         tokenManager.isAdmin(token);
         return adminService.countCoupons();
     }
-//
-//    @GetMapping("coupons/{companyId}/count")
-//    public int countCompanyCoupons(@PathVariable int companyId, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
-//        tokenManager.isAdmin(token);
-//        return getComp;
-//    }
 
-    @GetMapping("coupons/{customerId}/count")
+    @GetMapping("companies/coupons/count/{companyId}")
+    public int countCompanyCoupons(@PathVariable int companyId, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
+        tokenManager.isAdmin(token);
+        return adminService.getCompanyCoupons(companyId).size();
+    }
+
+    @GetMapping("customer/coupons/count/{customerId}")
     public int countCustomerCoupons(@PathVariable int customerID, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
         tokenManager.isAdmin(token);
-        return getCustomerCoupons(customerID, token).size();
+        return adminService.getCustomerCoupons(customerID).size();
     }
 
 }

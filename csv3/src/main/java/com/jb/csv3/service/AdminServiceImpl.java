@@ -88,6 +88,11 @@ public class AdminServiceImpl extends ClientService implements AdminService {
     }
 
     @Override
+    public List<CouponDto> getCompanyCoupons(int companyID) {
+        return couponMapper.toDtoList(companyRepository.findById(companyID).get().getCoupons());
+    }
+
+    @Override
     public CustomerDto addCustomer(CustomerDto customerDto) throws CouponSystemException {
         Customer customer = customerMapper.toDAO(customerDto);
         // Check e-mail
@@ -99,7 +104,10 @@ public class AdminServiceImpl extends ClientService implements AdminService {
     }
 
     @Override
-    public CustomerDto updateCustomer(int customerID, CustomerDto customerDto) throws CouponSystemException {
+    public CustomerDto updateCustomer(
+            int customerID,
+            CustomerDto customerDto
+    ) throws CouponSystemException {
         // Checking if customer is exists
         if (!customerRepository.existsById(customerID)) {
             throw new CouponSystemException(ErrMsg.ID_NOT_EXIST);

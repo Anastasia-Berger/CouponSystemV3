@@ -1,6 +1,5 @@
 package com.jb.csv3.beans;
 
-import com.jb.csv3.beans.enums.ClientType;
 import com.jb.csv3.exeptions.CouponSystemException;
 import com.jb.csv3.exeptions.ErrMsg;
 import lombok.*;

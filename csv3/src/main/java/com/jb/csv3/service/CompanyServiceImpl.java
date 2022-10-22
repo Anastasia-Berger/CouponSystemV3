@@ -9,6 +9,7 @@ import com.jb.csv3.exeptions.CouponSystemException;
 import com.jb.csv3.exeptions.ErrMsg;
 import com.jb.csv3.mappers.CompanyMapper;
 import com.jb.csv3.mappers.CouponMapper;
+import com.jb.csv3.utils.TablePrinter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -50,20 +51,21 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
     @Override
     public CouponDto addCoupon(int companyID, CouponDto couponDto) throws CouponSystemException {
 
+        Company company = companyRepository.findById(companyID).get();
+        Coupon coupon = couponMapper.toDAO(couponDto);
+
         // Checks the unique title of the coupon
-        List<Coupon> companyCoupons = companyRepository.findById(companyID).get().getCoupons();
-        if (companyCoupons.contains(couponDto.getTitle()))
+        List<Coupon> companyCoupons = company.getCoupons();
+        if (companyCoupons.contains(coupon.getTitle()))
             // Coupon title can't be the same as already existing in company repository
             throw new CouponSystemException(ErrMsg.DUPLICATE_COUPON_TITLE);
 
         // Associates coupon with the owner company
-        Coupon coupon = couponMapper.toDAO(couponDto);
-        Company company = companyRepository.findById(companyID).get();
         coupon.setCompany(company);
 
         // Updating the plain object to include all new coupons.
-        List<Coupon> updatedCouponList = companyRepository.findById(companyID).get().getCoupons();
-        companyRepository.findById(companyID).get().setCoupons(updatedCouponList);
+//        List<Coupon> updatedCouponList = companyRepository.findById(companyID).get().getCoupons();
+//        companyRepository.findById(companyID).get().setCoupons(updatedCouponList);
 
         return couponMapper.toDTO(couponRepository.save(coupon));
     }
@@ -74,26 +76,34 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
         if (!couponRepository.existsById(couponId)) {
             throw new CouponSystemException(ErrMsg.ID_NOT_EXIST);
         }
+        System.out.println("Coupon ID for UPDATE: " + couponId);
 
-        couponDto.setId(couponId);
-        Coupon coupon = couponMapper.toDAO(couponDto);
-
+        Coupon oldCoupon = couponRepository.findById(couponId).get();
+        System.out.println("oldCoupon.getCompany().getId() " + oldCoupon.getCompany().getId());
         // Checks if company is the owner of the coupon
-        if (coupon.getCompany().getId() != companyID) {
+        if (oldCoupon.getCompany().getId() != companyID) {
             throw new CouponSystemException(ErrMsg.UNAUTHORIZED_EVENT);
         }
 
+        Coupon coupon = couponMapper.toDAO(couponDto);
+        System.out.println("CouponDto before setting id \n" + couponDto);
+        coupon.setId(couponId);
+        coupon.setCompany(companyRepository.findById(companyID).get());
+
         // Checks the unique title of the coupon
         List<Coupon> companyCoupons = companyRepository.findById(companyID).get().getCoupons();
-        if (companyCoupons.contains(coupon.getTitle()))
+        TablePrinter.print(companyCoupons);
+
+        if (companyCoupons.contains(coupon.getTitle())) {
             // Coupon title can't be the same as already existing in company repository
             throw new CouponSystemException(ErrMsg.DUPLICATE_COUPON_TITLE);
-
-        List<Coupon> updatedCouponList = companyRepository.findById(companyID).get().getCoupons();
-        companyRepository.findById(companyID).get().setCoupons(updatedCouponList);
+        }
 
         // Updating the coupon in repo
-        return couponMapper.toDTO(couponRepository.saveAndFlush(coupon));
+        Coupon coupon1 = couponRepository.saveAndFlush(coupon);
+        System.out.println("CouponDto from service AFTER seting id \n" + coupon1);
+        return couponMapper.toDTO(coupon1);
+
     }
 
     @Override
@@ -105,9 +115,6 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
 
         couponRepository.deleteCouponPurchaseHistory(couponID);
         couponRepository.deleteById(couponID);
-
-        List<Coupon> updatedCouponList = companyRepository.findById(companyID).get().getCoupons();
-        companyRepository.findById(companyID).get().setCoupons(updatedCouponList);
     }
 
     @Override

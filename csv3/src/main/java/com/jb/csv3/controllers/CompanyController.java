@@ -39,18 +39,30 @@ public class CompanyController {
 //        return companyService.updateCompany(companyID, companyDto);
 //    }
 
-    @PostMapping/*("coupons")*/
+    @PostMapping("new-coupon")
     @ResponseStatus(HttpStatus.CREATED)
-    public CouponDto addCoupon(@RequestBody CouponDto couponDto, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
+    public CouponDto addCoupon(
+            @RequestBody CouponDto couponDto,
+            @RequestHeader("Authorization") UUID token
+    ) throws CouponSystemException {
         int companyID = tokenManager.getUserID(token);
         return companyService.addCoupon(companyID, couponDto);
     }
 
     // check if this working with company id
     @PutMapping("coupons/{couponId}")
-    public CouponDto updateCoupon(@PathVariable int couponId, @RequestBody CouponDto couponDto, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
+    public CouponDto updateCoupon(
+            @PathVariable int couponId,
+            @RequestBody CouponDto couponDto,
+            @RequestHeader("Authorization") UUID token
+    ) throws CouponSystemException {
+
         int companyID = tokenManager.getUserID(token);
-        return companyService.updateCoupon(companyID, couponId, couponDto);
+        System.out.println("Company id from controller: " + companyID);
+        System.out.println("Coupon id from controller: " + couponId);
+        System.out.println("Coupon from controller: " + couponDto);
+        return companyService.updateCoupon(
+                companyID, couponId, couponDto);
     }
 
     @DeleteMapping("coupons/{couponID}")
