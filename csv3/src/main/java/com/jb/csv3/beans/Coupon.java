@@ -19,8 +19,8 @@ import java.util.Set;
 @Table(name = "coupons")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Builder
+@Data
 public class Coupon extends Base {
 
     @Id
@@ -28,7 +28,7 @@ public class Coupon extends Base {
     private int id;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne/*(cascade = CascadeType.MERGE)*/
     private Company company;
 
 //    @Column(name = "company_id", insertable = false)
@@ -56,18 +56,4 @@ public class Coupon extends Base {
     @Column(nullable = false)
     private double price;
     private String image;
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Coupon)) return false;
-        Coupon coupon = (Coupon) o;
-        return getId() == coupon.getId() && getTitle().equals(coupon.getTitle());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getTitle());
-    }
 }

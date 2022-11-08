@@ -9,7 +9,6 @@ import com.jb.csv3.exeptions.CouponSystemException;
 import com.jb.csv3.exeptions.ErrMsg;
 import com.jb.csv3.mappers.CompanyMapper;
 import com.jb.csv3.mappers.CouponMapper;
-import com.jb.csv3.utils.TablePrinter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -72,18 +71,17 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
 
     @Override
     public CouponDto updateCoupon(int companyID, int couponId, CouponDto couponDto) throws CouponSystemException {
+
+        System.out.println("SERVICE PRINT FROM UPDATE COUPON   >>>   couponRepository.existsById(couponId)) " + couponRepository.existsById(couponId));
         // Checks if the coupon exist in repository
-        if (!couponRepository.existsById(couponId)) {
-            throw new CouponSystemException(ErrMsg.ID_NOT_EXIST);
-        }
+        if (!couponRepository.existsById(couponId)) {throw new CouponSystemException(ErrMsg.ID_NOT_EXIST);}
+
 
         Coupon oldCoupon = couponRepository.findById(couponId).get();
-        // Checks if company is the owner of the original coupon
-        if (oldCoupon.getCompany().getId() != companyID) {
-            throw new CouponSystemException(ErrMsg.UNAUTHORIZED_EVENT);
-        }
 
-        couponDto.setId(couponId);
+        // Checks if company is the owner of the original coupon
+        if (oldCoupon.getCompany().getId() != companyID) {throw new CouponSystemException(ErrMsg.UNAUTHORIZED_EVENT);}
+
         Coupon newCoupon = couponMapper.toDAO(couponDto);
         newCoupon.setCompany(companyRepository.findById(companyID).get());
 
@@ -95,7 +93,6 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
         }
 
         // Updating the coupon in repo
-//        System.out.println("Coupon from service: " + couponMapper.toDTO(couponRepository.saveAndFlush(newCoupon)));
         return couponMapper.toDTO(couponRepository.saveAndFlush(newCoupon));
     }
 
