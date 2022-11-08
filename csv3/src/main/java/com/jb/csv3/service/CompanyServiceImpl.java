@@ -72,38 +72,31 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
 
     @Override
     public CouponDto updateCoupon(int companyID, int couponId, CouponDto couponDto) throws CouponSystemException {
-        // Checks if the coupon is in the repo
+        // Checks if the coupon exist in repository
         if (!couponRepository.existsById(couponId)) {
             throw new CouponSystemException(ErrMsg.ID_NOT_EXIST);
         }
-        System.out.println("Coupon ID for UPDATE: " + couponId);
 
         Coupon oldCoupon = couponRepository.findById(couponId).get();
-        System.out.println("oldCoupon.getCompany().getId() " + oldCoupon.getCompany().getId());
-        // Checks if company is the owner of the coupon
+        // Checks if company is the owner of the original coupon
         if (oldCoupon.getCompany().getId() != companyID) {
             throw new CouponSystemException(ErrMsg.UNAUTHORIZED_EVENT);
         }
 
-        Coupon coupon = couponMapper.toDAO(couponDto);
-        System.out.println("CouponDto before setting id \n" + couponDto);
-        coupon.setId(couponId);
-        coupon.setCompany(companyRepository.findById(companyID).get());
+        couponDto.setId(couponId);
+        Coupon newCoupon = couponMapper.toDAO(couponDto);
+        newCoupon.setCompany(companyRepository.findById(companyID).get());
 
         // Checks the unique title of the coupon
         List<Coupon> companyCoupons = companyRepository.findById(companyID).get().getCoupons();
-        TablePrinter.print(companyCoupons);
-
-        if (companyCoupons.contains(coupon.getTitle())) {
+        if (companyCoupons.contains(newCoupon.getTitle())) {
             // Coupon title can't be the same as already existing in company repository
             throw new CouponSystemException(ErrMsg.DUPLICATE_COUPON_TITLE);
         }
 
         // Updating the coupon in repo
-        Coupon coupon1 = couponRepository.saveAndFlush(coupon);
-        System.out.println("CouponDto from service AFTER seting id \n" + coupon1);
-        return couponMapper.toDTO(coupon1);
-
+//        System.out.println("Coupon from service: " + couponMapper.toDTO(couponRepository.saveAndFlush(newCoupon)));
+        return couponMapper.toDTO(couponRepository.saveAndFlush(newCoupon));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.jb.csv3.beans;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jb.csv3.beans.enums.Category;
 import com.jb.csv3.exeptions.CouponSystemException;
 import com.jb.csv3.exeptions.ErrMsg;
@@ -10,7 +11,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "coupons")
@@ -18,7 +21,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Data
 @Builder
-public class Coupon extends Base{
+public class Coupon extends Base {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,4 +57,17 @@ public class Coupon extends Base{
     private double price;
     private String image;
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Coupon)) return false;
+        Coupon coupon = (Coupon) o;
+        return getId() == coupon.getId() && getTitle().equals(coupon.getTitle());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getTitle());
+    }
 }

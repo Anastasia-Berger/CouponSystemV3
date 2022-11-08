@@ -26,6 +26,6 @@ public interface CouponRepository extends JpaRepository<Coupon, Integer> {
     @Override
     List<Coupon> findAll();
 
-    @Query(value = "select exists (SELECT * FROM customers_coupons WHERE `CUSTOMER_ID` = :customerId and `coupons_id` = :couponId) as res", nativeQuery = true)
+    @Query(value = "select exists (SELECT * FROM customers_coupons WHERE `CUSTOMER_ID` = :customerId and `coupon_id` = :couponId) as res", nativeQuery = true)
     int existsByCustomerIdAndCouponId(@Param("customerId") int customerId, @Param("couponId") int couponId);
 }

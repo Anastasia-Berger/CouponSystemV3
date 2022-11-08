@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -109,7 +110,7 @@ public class AdminController {
     }
 
     @GetMapping("customers/{customerID}/coupons")
-    public List<CouponDto> getCustomerCoupons(@PathVariable int customerID, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
+    public Set<CouponDto> getCustomerCoupons(@PathVariable int customerID, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
         tokenManager.isAdmin(token);
         return adminService.getCustomerCoupons(customerID);
     }

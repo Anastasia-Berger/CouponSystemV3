@@ -6,6 +6,7 @@ import com.jb.csv3.dto.beansDto.CustomerDto;
 import com.jb.csv3.exeptions.CouponSystemException;
 
 import java.util.List;
+import java.util.Set;
 
 public interface AdminService {
 
@@ -43,7 +44,7 @@ public interface AdminService {
 
     CustomerDto getOneCustomer(int customerID);
 
-    List<CouponDto> getCustomerCoupons(int customerID);
+    Set<CouponDto> getCustomerCoupons(int customerID);
 
     int countCustomers();
 

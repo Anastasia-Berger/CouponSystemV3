@@ -6,12 +6,14 @@ import com.jb.csv3.beans.enums.Category;
 import com.jb.csv3.exeptions.CouponSystemException;
 import com.jb.csv3.security.TokenManager;
 import com.jb.csv3.service.CustomerService;
+import com.jb.csv3.utils.TablePrinter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -48,27 +50,27 @@ public class CustomerController {
         return customerService.getAllCoupons();
     }
 
-    @PostMapping("purchase")
+    @PostMapping("/purchase/{couponId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public CouponDto purchaseCoupon(@RequestBody CouponDto couponDto, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
+    public CouponDto purchaseCoupon(@PathVariable int couponId, /*@RequestBody CouponDto couponDto,*/ @RequestHeader("Authorization") UUID token) throws CouponSystemException {
         int userId = tokenManager.getUserID(token);
-        return customerService.purchaseCoupon(userId, couponDto);
+        return customerService.purchaseCoupon(userId, couponId/*, couponDto*/);
     }
 
     @GetMapping("coupons/purchased")
-    public List<CouponDto> getCustomerCoupons(@RequestHeader("Authorization") UUID token) throws CouponSystemException {
+    public Set<CouponDto> getCustomerCoupons(@RequestHeader("Authorization") UUID token) throws CouponSystemException {
         int customerID = tokenManager.getUserID(token);
         return customerService.getCustomerCoupons(customerID);
     }
 
     @GetMapping("coupons/{category}")
-    public List<CouponDto> getCustomerCoupons(@PathVariable Category category, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
+    public Set<CouponDto> getCustomerCoupons(@PathVariable Category category, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
         int userId = tokenManager.getUserID(token);
         return customerService.getCustomerCoupons(userId, category);
     }
 
     @GetMapping("coupons/{maxPrice}")
-    public List<CouponDto> getCustomerCoupons(@PathVariable double maxPrice, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
+    public Set<CouponDto> getCustomerCoupons(@PathVariable double maxPrice, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
         int userId = tokenManager.getUserID(token);
         return customerService.getCustomerCoupons(userId, maxPrice);
     }

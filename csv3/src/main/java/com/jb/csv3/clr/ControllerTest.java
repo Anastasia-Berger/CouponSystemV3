@@ -5,6 +5,7 @@ import com.jb.csv3.beans.Coupon;
 import com.jb.csv3.beans.enums.Category;
 import com.jb.csv3.beans.enums.ClientType;
 import com.jb.csv3.controllers.AdminController;
+import com.jb.csv3.controllers.CompanyController;
 import com.jb.csv3.controllers.CustomerController;
 import com.jb.csv3.dto.beansDto.CompanyDto;
 import com.jb.csv3.dto.beansDto.CouponDto;
@@ -44,6 +45,7 @@ public class ControllerTest implements CommandLineRunner {
 
     private final AdminController adminController;
     private final CustomerController customerController;
+    private final CompanyController companyController;
 
     private final AdminService adminService;
     private final CustomerService customerService;
@@ -70,31 +72,6 @@ public class ControllerTest implements CommandLineRunner {
 //        System.out.println("adminController.countCoupons(admin)   >>>   " + adminController.countCoupons(admin));
 //        System.out.println("adminService.countCoupons()   >>>   " + adminService.countCoupons());
 //
-//        System.out.println("adminService.getOneCompany(companyID)   >>>   " + adminService.getOneCompany(1));
-//        System.out.println("adminController.getOneCompany(1, admin)   >>>   " + adminController.getOneCompany(1, admin));
-
-
-//        System.out.println("   **********          CUSTOMER UUID LOGIN          ********** \n");
-//        UUID customer = loginManager.login("adam@mail.com", "customer1234", ClientType.CUSTOMER);
-//        System.out.println("CUSTOMER TOKEN:   >>>   " + customer.toString());
-//
-//        CouponDto ctb = couponMapper.toDTO(couponRepository.findById(2).get());
-//        System.out.println("customerController.purchaseCoupon(ctb, customer)   >>>   "
-//                        + customerController.purchaseCoupon(ctb, customer));
-//
-//        System.out.println("customerController.getCustomerDetails(customer)   >>>   "
-//                + customerController.getCustomerDetails(customer));
-
-//        System.out.println("customerService.getCustomerDetails(4)   >>>   "
-//                + customerService.getCustomerDetails(4));
-//
-//        System.out.println("customerController.getCustomerDetails(customer)   >>>   "
-//                + customerController.getCustomerDetails(customer));
-
-//        System.out.println("customerController.countCoupons(customer)   >>>   " + customerController.getCustomerDetails(customer));
-
-//        System.out.println("adminService.countCoupons()   >>>   " + adminService.countCoupons());
-
 //        System.out.println("adminService.getOneCompany(companyID)   >>>   " + adminService.getOneCompany(1));
 //        System.out.println("adminController.getOneCompany(1, admin)   >>>   " + adminController.getOneCompany(1, admin));
 
@@ -128,7 +105,18 @@ public class ControllerTest implements CommandLineRunner {
 //
 //        Coupon newCouponToUpdate = Coupon.builder()
 //                .company(companyForCoupon)
-//                .title("Coupon Update Test 56")
+//                .title("Company Service update")
+//                .description("Coupon for update")
+//                .category(Category.FOOD)
+//                .amount(23)
+//                .price(2)
+//                .startDate(Date.valueOf(LocalDate.of(2022, 11, 1)))
+//                .endDate(Date.valueOf(LocalDate.of(2022, 12, 30)))
+//                .build();
+//
+//        Coupon newCouponToUpdate2 = Coupon.builder()
+//                .company(companyForCoupon)
+//                .title("Company Controller update")
 //                .description("Coupon for update")
 //                .category(Category.FOOD)
 //                .amount(23)
@@ -138,9 +126,33 @@ public class ControllerTest implements CommandLineRunner {
 //                .build();
 //
 //        CouponDto couponDtoUpd = couponMapper.toDTO(newCouponToUpdate);
-//        companyService.updateCoupon(userID, 5, couponDtoUpd);
+//        CouponDto couponDtoUpd2 = couponMapper.toDTO(newCouponToUpdate2);
 //
-//        System.out.println("Coupons after update");
+//        System.out.println("Coupons after service update");
+//        companyService.updateCoupon(userID, 5, couponDtoUpd);
 //        TablePrinter.print(companyService.getCompanyCoupons(userID));
+//
+//        System.out.println("Coupons after controller update");
+//        companyController.updateCoupon(5, couponDtoUpd2, companyToken);
+//        TablePrinter.print(companyService.getCompanyCoupons(userID));
+
+
+        System.out.println("   **********          CUSTOMER UUID LOGIN          ********** \n");
+
+        UUID customerToken = loginManager.login("adam@mail.com", "customer1234", ClientType.CUSTOMER);
+        System.out.println("   CUSTOMER TOKEN:   >>>   " + customerToken.toString());
+        System.out.println(" ");
+
+        CouponDto ctb = couponMapper.toDTO(couponRepository.findById(2).get());
+        customerController.purchaseCoupon(2, customerToken);
+
+        System.out.println("\n   CUSTOMER COUPONS FROM CONTROLLER   >>>   \n");
+        TablePrinter.print(customerController.getCustomerCoupons(customerToken));
+
+        System.out.println("   CUSTOMER DETAILS FROM CONTROLLER   >>>   \n");
+        TablePrinter.print(customerController.getCustomerDetails(customerToken));
+
+        System.out.println("   CUSTOMER FROM REPOSITORY   ");
+        TablePrinter.print(customerRepository.findById(4).get());
     }
 }

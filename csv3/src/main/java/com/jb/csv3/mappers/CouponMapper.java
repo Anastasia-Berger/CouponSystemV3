@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -54,5 +55,9 @@ public class CouponMapper implements Mapper<Coupon, CouponDto> {
     @Override
     public List<CouponDto> toDtoList(List<Coupon> coupons) {
         return coupons.stream().map(this::toDTO).collect(Collectors.toList());
+    }
+
+    public Set<CouponDto> toDtoSet(Set<Coupon> coupons) {
+        return coupons.stream().map(this::toDTO).collect(Collectors.toSet());
     }
 }

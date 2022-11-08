@@ -49,7 +49,6 @@ public class CompanyController {
         return companyService.addCoupon(companyID, couponDto);
     }
 
-    // check if this working with company id
     @PutMapping("coupons/{couponId}")
     public CouponDto updateCoupon(
             @PathVariable int couponId,
@@ -58,14 +57,15 @@ public class CompanyController {
     ) throws CouponSystemException {
 
         int companyID = tokenManager.getUserID(token);
+        System.out.println("updateCoupon from company controller");
         System.out.println("Company id from controller: " + companyID);
         System.out.println("Coupon id from controller: " + couponId);
-        System.out.println("Coupon from controller: " + couponDto);
-        return companyService.updateCoupon(
-                companyID, couponId, couponDto);
+        System.out.println("Coupon from controller: \n" + couponDto);
+
+        return companyService.updateCoupon(companyID, couponId, couponDto);
     }
 
-    @DeleteMapping("coupons/{couponID}")
+    @DeleteMapping("coupon/{couponID}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCoupon(@PathVariable int couponID, @RequestHeader("Authorization") UUID token) throws CouponSystemException {
         int companyID = tokenManager.getUserID(token);
@@ -93,6 +93,7 @@ public class CompanyController {
     @GetMapping("details")
     CompanyDto getCompanyDetails(@RequestHeader("Authorization") UUID token) throws CouponSystemException {
         int companyID = tokenManager.getUserID(token);
+        System.out.println(companyID);
         return companyService.getCompanyDetails(companyID);
     }
 

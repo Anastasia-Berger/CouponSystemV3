@@ -36,7 +36,7 @@ public class TokenManager {
         if (information == null) {
             throw new CouponSystemException(ErrMsg.USER_ID_NOT_FOUND);
         }
-        System.out.println("from token manager, get user id, prints tokens " + tokens);
+//        System.out.println("from token manager, get user id, prints tokens " + tokens);
         return tokens.get(uuid).getId();
     }
 

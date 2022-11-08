@@ -6,6 +6,7 @@ import com.jb.csv3.beans.enums.Category;
 import com.jb.csv3.exeptions.CouponSystemException;
 
 import java.util.List;
+import java.util.Set;
 
 public interface CustomerService {
 
@@ -17,13 +18,13 @@ public interface CustomerService {
 
     List<CouponDto> getAllCoupons();
 
-    CouponDto purchaseCoupon(int customerID, CouponDto CouponDto) throws CouponSystemException;
+    CouponDto purchaseCoupon(int customerID, int couponId/*, CouponDto CouponDto*/) throws CouponSystemException;
 
-    List<CouponDto> getCustomerCoupons(int customerID);
+    Set<CouponDto> getCustomerCoupons(int customerID);
 
-    List<CouponDto> getCustomerCoupons(int customerID, Category category);
+    Set<CouponDto> getCustomerCoupons(int customerID, Category category);
 
-    List<CouponDto> getCustomerCoupons(int customerID, double maxPrice);
+    Set<CouponDto> getCustomerCoupons(int customerID, double maxPrice);
 
     CustomerDto getCustomerDetails(int customerID) throws CouponSystemException;
 

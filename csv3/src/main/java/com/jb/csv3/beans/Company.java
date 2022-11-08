@@ -12,9 +12,9 @@ import java.util.List;
 @Table(name = "companies")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Builder
-public class Company extends Base{
+@Data
+public class Company extends Base {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,18 +30,16 @@ public class Company extends Base{
     private String password;
 
     @ToString.Exclude
-    //    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "company")
-//    @JoinColumn(name = "company_id")
     @Singular
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "company")
     private List<Coupon> coupons = new ArrayList<>();
 
     private String image;
 
-    public void setId(int id) throws CouponSystemException {
-        if (this.id == 0) {
-            this.id = id;
-        }
-        throw new CouponSystemException(ErrMsg.ILLEGAL_ACTION_EXCEPTION);
-    }
+//    public void setId(int id) throws CouponSystemException {
+//        if (this.id == 0) {
+//            this.id = id;
+//        }
+//        throw new CouponSystemException(ErrMsg.ILLEGAL_ACTION_EXCEPTION);
+//    }
 }

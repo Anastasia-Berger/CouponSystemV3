@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Primary
@@ -140,8 +141,8 @@ public class AdminServiceImpl extends ClientService implements AdminService {
     }
 
     @Override
-    public List<CouponDto> getCustomerCoupons(int customerID) {
-        return couponMapper.toDtoList(customerRepository.findById(customerID).get().getCoupons());
+    public Set<CouponDto> getCustomerCoupons(int customerID) {
+        return couponMapper.toDtoSet(customerRepository.findById(customerID).get().getCoupons());
     }
 
     @Override

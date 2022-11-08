@@ -5,7 +5,6 @@ import com.jb.csv3.beans.Customer;
 import com.jb.csv3.dto.beansDto.CouponDto;
 import com.jb.csv3.dto.beansDto.CustomerDto;
 import com.jb.csv3.beans.enums.Category;
-import com.jb.csv3.beans.enums.ClientType;
 import com.jb.csv3.exeptions.CouponSystemException;
 import com.jb.csv3.exeptions.ErrMsg;
 import com.jb.csv3.mappers.CouponMapper;
@@ -14,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -66,67 +66,66 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
     }
 
     @Override
-    public CouponDto purchaseCoupon(int customerID, CouponDto couponDto) throws CouponSystemException {
-        Coupon coupon = couponMapper.toDAO(couponDto);
+    public CouponDto purchaseCoupon(int customerID, int couponID/*, CouponDto couponDto*/) throws CouponSystemException {
 
-        // Check if coupon is stock
-        if (coupon.getAmount() == 0) {
+        Coupon couponToBuy = (couponRepository.findById(couponID).orElseThrow(
+                () -> new CouponSystemException(ErrMsg.ID_NOT_EXIST)));
+
+        // Check if coupon is in stock
+        if (couponToBuy.getAmount() == 0) {
             throw new CouponSystemException(ErrMsg.COUPON_IS_OUT_OF_STOCK);
         }
 
         // Check customer's stock of coupons
-        if (couponRepository.existsByCustomerIdAndCouponId(customerID, coupon.getId()) != 0) {
+        if (couponRepository.existsByCustomerIdAndCouponId(customerID, couponToBuy.getId()) != 0) {
             throw new CouponSystemException(ErrMsg.ALREADY_PURCHASED);
         }
 
-
-        Customer customerFromDB = customerRepository.findById(customerID).get();
-
-        List<Coupon> coupons = customerFromDB.getCoupons();
-        coupons.add(coupon);
         // Updating current logged user by data from updated repository
-        customerFromDB.setCoupons(coupons);
+        Customer customerFromDB = customerRepository.findById(customerID).get();
+        customerFromDB.getCoupons().add(couponToBuy);
+
         // Updating customer coupon list in repository
         customerRepository.saveAndFlush(customerFromDB);
 
         // Updating current
-        coupon.setAmount(coupon.getAmount() - 1);
+        couponToBuy.setAmount(couponToBuy.getAmount() - 1);
+
         // Updating coupon amount in repository
-        return couponMapper.toDTO(couponRepository.saveAndFlush(coupon));
+        return couponMapper.toDTO(couponRepository.save(couponToBuy));
     }
 
     @Override
-    public List<CouponDto> getCustomerCoupons(int customerID) {
-        return couponMapper.toDtoList(customerRepository.findById(customerID).get().getCoupons());
+    public Set<CouponDto> getCustomerCoupons(int customerID) {
+        return couponMapper.toDtoSet(customerRepository.findById(customerID).get().getCoupons());
     }
 
     @Override
-    public List<CouponDto> getCustomerCoupons(int customerID, Category category) {
-        List<Coupon> couponListSortedByCategory = customerRepository.findById(customerID).get().getCoupons().stream()
+    public Set<CouponDto> getCustomerCoupons(int customerID, Category category) {
+        Set<Coupon> couponListSortedByCategory = customerRepository.findById(customerID).get().getCoupons().stream()
                 .filter(coupon -> category.ordinal() == coupon.getCategory().ordinal())
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
         ;
 
-        return couponMapper.toDtoList(couponListSortedByCategory);
+        return couponMapper.toDtoSet(couponListSortedByCategory);
     }
 
     @Override
-    public List<CouponDto> getCustomerCoupons(int customerID, double maxPrice) {
-        List<Coupon> couponListSortedByMaxPrice = customerRepository.findById(customerID).get().getCoupons().stream()
+    public Set<CouponDto> getCustomerCoupons(int customerID, double maxPrice) {
+        Set<Coupon> couponListSortedByMaxPrice = customerRepository.findById(customerID).get().getCoupons().stream()
                 .filter(coupon -> maxPrice >= coupon.getPrice())
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
 
-        return couponMapper.toDtoList(couponListSortedByMaxPrice);
+        return couponMapper.toDtoSet(couponListSortedByMaxPrice);
     }
 
     @Override
     public CustomerDto getCustomerDetails(int customerID) throws CouponSystemException {
-        if (!customerRepository.existsById(customerID)){
+        if (!customerRepository.existsById(customerID)) {
             throw new CouponSystemException(ErrMsg.ID_NOT_EXIST);
         }
 
-        Customer customer = customerRepository.findById(customerID).get();
-        return customerMapper.toDTO(customer);
+        return customerMapper.toDTO(customerRepository.findById(customerID).get());
     }
 
     @Override
